@@ -37,6 +37,8 @@ export function Home() {
             nickname: username
         }
         socket.emit("joinAvailableRoom", roomName, user);
+
+        navigate(`/${roomName}/${username}`);
     }
 
     let roomsHTML = availableRooms.map((room, i) => {

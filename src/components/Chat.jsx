@@ -3,9 +3,6 @@ import { useParams } from "react-router-dom"
 import { socket } from "./Home";
 
 
-
-
-
 export function Chat() {
 
     let { room, user } = useParams();
@@ -31,16 +28,10 @@ export function Chat() {
         socket.emit("chatt", room, user, message);
     }
 
-    socket.on("chatting", function (user, message) {
+    socket.on("chatting", function (array) {
 
-        console.log(message);
-        let array = chatArray;
-        let newMessage = {
-            nickname: user,
-            text: message
-        }
-        array.push(newMessage)
         setChatArray([...array])
+        console.log("chatarray", chatArray);
     });
 
     let chatList = chatArray.map((message, i) => {
