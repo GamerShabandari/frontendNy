@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client"
 export const socket = io('http://localhost:3001', { "autoConnect": false })
+
 
 export function Home() {
 
     const [username, setUsername] = useState("");
     const [roomToJoin, setRoomToJoin] = useState("");
     const [availableRooms, setAvailableRooms] = useState([]);
+    const [toggleChat, setToggleChat] = useState(false)
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         socket.connect();
@@ -26,6 +31,8 @@ export function Home() {
             nickname: username
         }
         socket.emit("joinNewRoom", roomToJoin, user);
+        //navigate("/chat");
+        navigate(`/${roomToJoin}`);
     }
 
     function joinAvailableRoom(roomName){
