@@ -1,7 +1,13 @@
-export function Chat(){
-    return(
+import { useParams } from "react-router-dom"
+
+
+
+export function Chat() {
+
+    let { room } = useParams();
+    return (
         <>
-        hej från chatten
+            hej från chatten rum {room}
         </>
     )
 }
