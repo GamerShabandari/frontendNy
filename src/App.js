@@ -10,7 +10,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home/>}></Route>
+
           <Route path="/:roomName" element={<Chat/>}></Route>
+
 
         </Routes>
       </BrowserRouter>

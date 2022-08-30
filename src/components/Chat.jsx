@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { io } from "socket.io-client";
@@ -161,7 +162,5 @@ export function Chat() {
 } */}
 
             {/* {colors.length == 0 && <div>rummet är tyvörr fullt, prova ett annat rum</div>} */}
-
-        </>
-    )
-}
+            </>
+            )}
