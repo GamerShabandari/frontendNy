@@ -18,34 +18,31 @@ export function Home() {
 
     }, []);
 
-
-
-      socket.on("availableRooms", function (rooms) {
+    socket.on("availableRooms", function (rooms) {
         setAvailableRooms([...rooms])
         console.log(rooms)
-      });
-
+    });
 
     function join() {
         let user = {
             nickname: username
         }
         socket.emit("joinNewRoom", roomToJoin, user);
-        //navigate("/chat");
-        navigate(`/${roomToJoin}`);
+
+        navigate(`/${roomToJoin}/${username}`);
     }
 
-    function joinAvailableRoom(roomName){
+    function joinAvailableRoom(roomName) {
         let user = {
             nickname: username
         }
         socket.emit("joinAvailableRoom", roomName, user);
     }
 
-    let roomsHTML =  availableRooms.map((room, i) =>{
-        return(
+    let roomsHTML = availableRooms.map((room, i) => {
+        return (
             <div key={i}>
-                <h3 onClick={()=>{joinAvailableRoom(room.roomName)}}>{room.roomName}</h3>
+                <h3 onClick={() => { joinAvailableRoom(room.roomName) }}>{room.roomName}</h3>
 
             </div>
         )
@@ -60,7 +57,7 @@ export function Home() {
         <div>{username} - {roomToJoin}</div>
         {availableRooms.length}
         {roomsHTML}
-      
+
     </>)
 
 }
