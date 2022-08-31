@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client"
 export const socket = io('http://localhost:3001', { "autoConnect": false })
+//export const socket = io.connect('http://localhost:3001');
 
 
 export function Home() {
@@ -9,7 +10,7 @@ export function Home() {
     const [username, setUsername] = useState("");
     const [roomToJoin, setRoomToJoin] = useState("");
     const [availableRooms, setAvailableRooms] = useState([]);
-    const [toggleChat, setToggleChat] = useState(false)
+   // const [toggleChat, setToggleChat] = useState(false)
 
     const navigate = useNavigate();
 
