@@ -38,7 +38,38 @@ export function Chat() {
             setColorsArray([...room.colors])
         });
 
+        socket.on("history", function (history) {
+            //setFacit([...room.facit])
+            setFieldsArray([...history])
+           // setColorsArray([...room.colors])
+        });
+
+
+        // socket.on("drawing", function (msg) {
+        //     let newArray = fieldsArray;
+        //     for (let i = 0; i < fieldsArray.length; i++) {
+        //         const pixel = fieldsArray[i];
+        //         if (pixel.position === msg.position) {
+        //             newArray[i].color = msg.color;
+        //             setFieldsArray([...newArray]);
+        //             return;
+        //         }
+        //     }
+        // });
+
     }, []);
+
+    socket.on("drawing", function (msg) {
+        let newArray = fieldsArray;
+        for (let i = 0; i < fieldsArray.length; i++) {
+            const pixel = fieldsArray[i];
+            if (pixel.position === msg.position) {
+                newArray[i].color = msg.color;
+                setFieldsArray([...newArray]);
+                return;
+            }
+        }
+    });
 
     function sendMessage() {
         socket.emit("chatt", room, user, message);
@@ -53,35 +84,33 @@ export function Chat() {
     })
 
     const paint = (field, e) => {
-        //socket.connect()
-        
+
         fieldsArray.find(f => {
-          if(f.position === field.position){
-            field.color = myColor
-            socket.emit("drawing", field, room)
-            //console.log(fields);
-          }
-        }) 
-      }
+            if (f.position === field.position) {
+                field.color = myColor
+                socket.emit("drawing", field, room)
+            }
+        })
+    }
 
     let renderGrid = fieldsArray.map(field => {
-        return(<div key={field.position} id={field.position} className="pixel" 
-            onMouseEnter={(e) => {e.currentTarget.style.backgroundColor = myColor}}
-            onMouseLeave={(e) => {e.currentTarget.style.backgroundColor = field.color}}
-            onClick={(e) => paint(field, e)} style={{backgroundColor: field.color}}>
-          </div>)
-      })
+        return (<div key={field.position} id={field.position} className="pixel"
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = myColor }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = field.color }}
+            onClick={(e) => paint(field, e)} style={{ backgroundColor: field.color }}>
+        </div>)
+    })
 
-      let renderFacit = facit.map((pixel) => {
+    let renderFacit = facit.map((pixel) => {
         return (
-          <div
-            key={pixel.position}
-            id={pixel.position}
-            className="pixelFacit"
-            style={{ backgroundColor: pixel.color }}
-          ></div>
+            <div
+                key={pixel.position}
+                id={pixel.position}
+                className="pixelFacit"
+                style={{ backgroundColor: pixel.color }}
+            ></div>
         );
-      });
+    });
 
 
     return (
@@ -89,7 +118,7 @@ export function Chat() {
             welcome {user} to room {room}
             <br />
 
-       
+
 
             <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
             <button onClick={sendMessage}>send</button>
@@ -97,7 +126,7 @@ export function Chat() {
             <ul>
                 {chatList}
             </ul>
-        
+
             <div id="grid">{renderGrid}</div>
 
             <div id="facitGrid">{renderFacit}</div>
