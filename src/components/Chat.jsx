@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
+const fieldsJSON = require("../assets/fields.json");
 
 
 export function Chat() {
@@ -11,15 +12,24 @@ export function Chat() {
     const [chatArray, setChatArray] = useState([]);
     const [fieldsArray, setFieldsArray] = useState([]);
     const [colorsArray, setColorsArray] = useState([]);
+    const [usersInRoom, setUsersInRoom] = useState([]);
 
-    const myColor = "lightgreen";
+
+    let myColor = "lightgreen";
 
 
     useEffect(() => {
         socket.connect();
-        if (facit.length === 0) {
-            socket.emit("getMyRoom", room);
-        }
+
+        setFieldsArray([...fieldsJSON])
+        // if (facit.length === 0) {
+        //     socket.emit("getMyRoom", room);
+        // }
+
+
+        socket.emit("getMyRoom", room);
+        console.log("begärde rum info");
+
 
         socket.on("chatting", function (message) {
 
@@ -34,14 +44,22 @@ export function Chat() {
 
         socket.on("hereIsYourRoom", function (room) {
             setFacit([...room.facit])
-            setFieldsArray([...room.fields])
+            // setFieldsArray([...room.fields])
             setColorsArray([...room.colors])
+            setUsersInRoom([...room.users])
         });
 
-        socket.on("history", function (history) {
+        socket.on("history", function (nickname, history) {
             //setFacit([...room.facit])
-            setFieldsArray([...history])
-           // setColorsArray([...room.colors])
+            console.log(nickname);
+            console.log(history);
+           // setFieldsArray([...history])
+            // if (user === nickname) {
+            //     console.log("här då!?");
+            //     setFieldsArray([...history])
+            // }
+
+            // setColorsArray([...room.colors])
         });
 
 
@@ -59,12 +77,13 @@ export function Chat() {
 
     }, []);
 
-    socket.on("drawing", function (msg) {
+    socket.on("drawing", function (pixelToUpdate) {
+        console.log("här");
         let newArray = fieldsArray;
-        for (let i = 0; i < fieldsArray.length; i++) {
-            const pixel = fieldsArray[i];
-            if (pixel.position === msg.position) {
-                newArray[i].color = msg.color;
+        for (let i = 0; i < newArray.length; i++) {
+            const pixel = newArray[i];
+            if (pixel.position === pixelToUpdate.position) {
+                newArray[i].color = pixelToUpdate.color;
                 setFieldsArray([...newArray]);
                 return;
             }
@@ -88,7 +107,8 @@ export function Chat() {
         fieldsArray.find(f => {
             if (f.position === field.position) {
                 field.color = myColor
-                socket.emit("drawing", field, room)
+                socket.emit("draw", field, room)
+                console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
             }
         })
     }
@@ -114,21 +134,31 @@ export function Chat() {
 
     let renderColorpicker = colorsArray.map((color, i) => {
         return (
-            <div
-                key={i}
-               
-                style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
+            <div key={i} onClick={() => { myColor = color.color }} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
             >välj färg</div>
         );
     });
+
+    let renderUsersInRoom = usersInRoom.map((user, i) => {
+        return (
+            <div
+                key={i}
+
+                style={{ backgroundColor: "red", padding: "10px", color: "white" }}
+            >{user.nickname}</div>
+        );
+    });
+
 
 
     return (
         <>
             welcome {user} to room {room}
             <br />
+            <div>{renderColorpicker}</div>
 
-            {renderColorpicker}
+            <div>{renderUsersInRoom}</div>
+
 
 
 
