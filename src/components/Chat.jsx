@@ -16,9 +16,6 @@ export function Chat() {
     const [myColor, setMyColor] = useState("white");
 
 
-   // let myColor = "red";
-
-
     useEffect(() => {
         socket.connect();
 
