@@ -15,7 +15,7 @@ export function Chat() {
     const [usersInRoom, setUsersInRoom] = useState([]);
 
 
-    let myColor = "lightgreen";
+    let myColor = "red";
 
 
     useEffect(() => {
