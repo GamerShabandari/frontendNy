@@ -112,11 +112,23 @@ export function Chat() {
         );
     });
 
+    let renderColorpicker = colorsArray.map((color, i) => {
+        return (
+            <div
+                key={i}
+               
+                style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
+            >välj färg</div>
+        );
+    });
+
 
     return (
         <>
             welcome {user} to room {room}
             <br />
+
+            {renderColorpicker}
 
 
 
