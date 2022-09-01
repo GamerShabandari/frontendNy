@@ -13,9 +13,10 @@ export function Chat() {
     const [fieldsArray, setFieldsArray] = useState([]);
     const [colorsArray, setColorsArray] = useState([]);
     const [usersInRoom, setUsersInRoom] = useState([]);
+    const [myColor, setMyColor] = useState("white");
 
 
-    let myColor = "red";
+   // let myColor = "red";
 
 
     useEffect(() => {
@@ -44,41 +45,18 @@ export function Chat() {
 
         socket.on("hereIsYourRoom", function (room) {
             setFacit([...room.facit])
-            // setFieldsArray([...room.fields])
             setColorsArray([...room.colors])
             setUsersInRoom([...room.users])
         });
 
-        socket.on("history", function (nickname, history) {
-            //setFacit([...room.facit])
-            console.log(nickname);
-            console.log(history);
-           // setFieldsArray([...history])
-            // if (user === nickname) {
-            //     console.log("här då!?");
-            //     setFieldsArray([...history])
-            // }
-
-            // setColorsArray([...room.colors])
+        socket.on("history", function (history) {
+            setFieldsArray([...history]) 
         });
-
-
-        // socket.on("drawing", function (msg) {
-        //     let newArray = fieldsArray;
-        //     for (let i = 0; i < fieldsArray.length; i++) {
-        //         const pixel = fieldsArray[i];
-        //         if (pixel.position === msg.position) {
-        //             newArray[i].color = msg.color;
-        //             setFieldsArray([...newArray]);
-        //             return;
-        //         }
-        //     }
-        // });
 
     }, []);
 
     socket.on("drawing", function (pixelToUpdate) {
-        console.log("här");
+        console.log("här"); ///// hamnar här massa gånger av någon anledning 
         let newArray = fieldsArray;
         for (let i = 0; i < newArray.length; i++) {
             const pixel = newArray[i];
@@ -134,7 +112,7 @@ export function Chat() {
 
     let renderColorpicker = colorsArray.map((color, i) => {
         return (
-            <div key={i} onClick={() => { myColor = color.color }} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
+            <div key={i} onClick={() => { setMyColor(color.color)}} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
             >välj färg</div>
         );
     });
