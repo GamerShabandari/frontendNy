@@ -54,7 +54,7 @@ export function Chat() {
     }, []);
 
     socket.on("drawing", function (pixelToUpdate) {
-        console.log("här"); ///// hamnar här massa gånger av någon anledning 
+        console.log("här"); //// hamnar här massa gånger av någon anledning 
         let newArray = fieldsArray;
         for (let i = 0; i < newArray.length; i++) {
             const pixel = newArray[i];
