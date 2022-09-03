@@ -21,6 +21,7 @@ export function Chat() {
         socket.connect();
 
         setFieldsArray([...fieldsJSON])
+        setColorsArray([...colorsJSON])
 
         socket.emit("getMyRoom", room);
 
@@ -40,15 +41,18 @@ export function Chat() {
         });
 
         socket.on("hereIsYourRoom", function (roomToMatch) {
-
+            console.log("du fick färger från: " + roomToMatch.roomName);
             setFacit([...roomToMatch.facit])
-            setColorsArray([...roomToMatch.colors])
+            //  setColorsArray([...roomToMatch.colors])
             setUsersInRoom([...roomToMatch.users])
+            // setFieldsArray([...roomToMatch.fields])
         });
 
-        socket.on("history", function (history) {
-            setFieldsArray([...history])
+        socket.on("history", function (roomWithHistory) {
+            setFieldsArray([...roomWithHistory.fields])
+            setColorsArray([...roomWithHistory.colors])
         });
+
 
     }, []);
 
@@ -61,22 +65,26 @@ export function Chat() {
                 newArray[i].color = pixelToUpdate.color;
                 setFieldsArray([...newArray]);
                 return;
+
             }
-        }
-    });
+        });
+
+    }, []);
 
     function sendMessage() {
         socket.emit("chatt", room, user, message);
     }
 
 
-    function pickColor(color) {
-        socket.emit("color", color, room);
+    function pickColor(colorPicked) {
+        setMyColor(colorPicked);
+
+        socket.emit("colorPicked", colorPicked, room);
         if (myColor !== "white") {
             socket.emit("colorChange", myColor, room);
         }
 
-        setMyColor(color);
+
     }
 
 
