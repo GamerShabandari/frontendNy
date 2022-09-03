@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
+const fieldsJSON = require("../assets/fields.json");
+const colorsJSON = require("../assets/colors.json");
 
 
 export function Chat() {
@@ -11,15 +13,20 @@ export function Chat() {
     const [chatArray, setChatArray] = useState([]);
     const [fieldsArray, setFieldsArray] = useState([]);
     const [colorsArray, setColorsArray] = useState([]);
-
-    const myColor = "lightgreen";
+    const [usersInRoom, setUsersInRoom] = useState([]);
+    const [myColor, setMyColor] = useState("white");
 
 
     useEffect(() => {
         socket.connect();
-        if (facit.length === 0) {
-            socket.emit("getMyRoom", room);
-        }
+
+        setFieldsArray([...fieldsJSON])
+
+        socket.emit("getMyRoom", room);
+
+        socket.on("updateColors", function (updatedColors) {
+            setColorsArray(updatedColors);
+        });
 
         socket.on("chatting", function (message) {
 
@@ -32,39 +39,26 @@ export function Chat() {
             return
         });
 
-        socket.on("hereIsYourRoom", function (room) {
-            setFacit([...room.facit])
-            setFieldsArray([...room.fields])
-            setColorsArray([...room.colors])
+        socket.on("hereIsYourRoom", function (roomToMatch) {
+
+            setFacit([...roomToMatch.facit])
+            setColorsArray([...roomToMatch.colors])
+            setUsersInRoom([...roomToMatch.users])
         });
 
         socket.on("history", function (history) {
-            //setFacit([...room.facit])
             setFieldsArray([...history])
-           // setColorsArray([...room.colors])
         });
-
-
-        // socket.on("drawing", function (msg) {
-        //     let newArray = fieldsArray;
-        //     for (let i = 0; i < fieldsArray.length; i++) {
-        //         const pixel = fieldsArray[i];
-        //         if (pixel.position === msg.position) {
-        //             newArray[i].color = msg.color;
-        //             setFieldsArray([...newArray]);
-        //             return;
-        //         }
-        //     }
-        // });
 
     }, []);
 
-    socket.on("drawing", function (msg) {
+    socket.on("drawing", function (pixelToUpdate) {
+        console.log("här"); //// hamnar här massa gånger av någon anledning 
         let newArray = fieldsArray;
-        for (let i = 0; i < fieldsArray.length; i++) {
-            const pixel = fieldsArray[i];
-            if (pixel.position === msg.position) {
-                newArray[i].color = msg.color;
+        for (let i = 0; i < newArray.length; i++) {
+            const pixel = newArray[i];
+            if (pixel.position === pixelToUpdate.position) {
+                newArray[i].color = pixelToUpdate.color;
                 setFieldsArray([...newArray]);
                 return;
             }
@@ -74,6 +68,18 @@ export function Chat() {
     function sendMessage() {
         socket.emit("chatt", room, user, message);
     }
+
+
+    function pickColor(color) {
+        socket.emit("color", color, room);
+        if (myColor !== "white") {
+            socket.emit("colorChange", myColor, room);
+        }
+
+        setMyColor(color);
+    }
+
+
 
     let chatList = chatArray.map((message, i) => {
         return (
@@ -88,7 +94,8 @@ export function Chat() {
         fieldsArray.find(f => {
             if (f.position === field.position) {
                 field.color = myColor
-                socket.emit("drawing", field, room)
+                socket.emit("draw", field, room)
+                console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
             }
         })
     }
@@ -112,13 +119,32 @@ export function Chat() {
         );
     });
 
+    let renderColorpicker = colorsArray.map((color, i) => {
+        return (
+            <div key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
+            >välj färg</div>
+        );
+    });
+
+    let renderUsersInRoom = usersInRoom.map((user, i) => {
+        return (
+            <div
+                key={i}
+
+                style={{ backgroundColor: "red", padding: "10px", color: "white" }}
+            >{user.nickname}</div>
+        );
+    });
+
+
 
     return (
         <>
             welcome {user} to room {room}
             <br />
+            <div>{renderColorpicker}</div>
 
-
+            <div>{renderUsersInRoom}</div>
 
             <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
             <button onClick={sendMessage}>send</button>

@@ -24,28 +24,19 @@ export function Home() {
         console.log(rooms)
     });
 
-    function join() {
+    function join(room) {
         let user = {
             nickname: username
         }
-        socket.emit("joinNewRoom", roomToJoin, user);
+        socket.emit("join", room, user);
 
-        navigate(`/${roomToJoin}/${username}`);
-    }
-
-    function joinAvailableRoom(roomName) {
-        let user = {
-            nickname: username
-        }
-        socket.emit("joinAvailableRoom", roomName, user);
-
-        navigate(`/${roomName}/${username}`);
+        navigate(`/${room}/${username}`);
     }
 
     let roomsHTML = availableRooms.map((room, i) => {
         return (
             <div key={i}>
-                <h3 onClick={() => { joinAvailableRoom(room.roomName) }}>{room.roomName}</h3>
+                <h3 onClick={() => {join(room.roomName)}}>{room.roomName}</h3>
 
             </div>
         )
@@ -55,7 +46,7 @@ export function Home() {
         <h1>hej och välkommen {username}</h1>
         <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
         <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
-        <button onClick={join}>join</button>
+        <button onClick={()=>{join(roomToJoin)}}>join</button>
 
         <div>{username} - {roomToJoin}</div>
         {availableRooms.length}
