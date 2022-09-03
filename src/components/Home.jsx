@@ -10,12 +10,21 @@ export function Home() {
     const [username, setUsername] = useState("");
     const [roomToJoin, setRoomToJoin] = useState("");
     const [availableRooms, setAvailableRooms] = useState([]);
-   // const [toggleChat, setToggleChat] = useState(false)
+    const [roomIsFull, setRoomIsFull] = useState(false);
+
+    // const [toggleChat, setToggleChat] = useState(false)
 
     const navigate = useNavigate();
 
     useEffect(() => {
         socket.connect();
+
+        socket.on("fullRoom", function (roomThatsFull, userWhoCantJoin) {
+            if (userWhoCantJoin === username) {
+                setRoomIsFull(true);
+            }
+            
+        });
 
     }, []);
 
@@ -30,13 +39,16 @@ export function Home() {
         }
         socket.emit("join", room, user);
 
-        navigate(`/${room}/${username}`);
+        if (!roomIsFull) {
+            navigate(`/${room}/${username}`);
+        }
+        
     }
 
     let roomsHTML = availableRooms.map((room, i) => {
         return (
             <div key={i}>
-                <h3 onClick={() => {join(room.roomName)}}>{room.roomName}</h3>
+                <h3 onClick={() => { join(room.roomName) }}>{room.roomName}</h3>
 
             </div>
         )
@@ -44,9 +56,13 @@ export function Home() {
 
     return (<>
         <h1>hej och välkommen {username}</h1>
+        {roomIsFull && <div>
+            <h3>Sorry room is full or finished, try another room or create a new one</h3>
+        </div>}
+
         <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
         <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
-        <button onClick={()=>{join(roomToJoin)}}>join</button>
+        <button onClick={() => { join(roomToJoin) }}>join</button>
 
         <div>{username} - {roomToJoin}</div>
         {availableRooms.length}
