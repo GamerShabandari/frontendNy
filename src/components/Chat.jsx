@@ -15,6 +15,8 @@ export function Chat() {
     const [colorsArray, setColorsArray] = useState([]);
     const [usersInRoom, setUsersInRoom] = useState([]);
     const [myColor, setMyColor] = useState("white");
+    const [gamerOver, setGamerOver] = useState(false);
+    const [result, setResult] = useState("");
 
 
     useEffect(() => {
@@ -50,6 +52,14 @@ export function Chat() {
             setFieldsArray([...history])
         });
 
+        socket.on("gameOver", function (resultInRoom) {
+            //alert(result)
+            setResult(resultInRoom)
+            setGamerOver(true)
+
+        });
+
+
     }, []);
 
     socket.on("drawing", function (pixelToUpdate) {
@@ -79,6 +89,9 @@ export function Chat() {
         setMyColor(color);
     }
 
+    function timeToCheckFacit() {
+        socket.emit("timeToCheckFacit", room);
+    }
 
 
     let chatList = chatArray.map((message, i) => {
@@ -153,7 +166,17 @@ export function Chat() {
                 {chatList}
             </ul>
 
-            <div id="grid">{renderGrid}</div>
+            <div>
+                <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
+            </div>
+
+            {gamerOver && <div><h1>GAME OVER! Your result was: {result}</h1></div>}
+
+            {!gamerOver && <>
+                <div id="grid">{renderGrid}</div>
+            </>}
+
+
 
             <div id="facitGrid">{renderFacit}</div>
         </>
