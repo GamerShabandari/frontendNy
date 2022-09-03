@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client"
 export const socket = io('http://localhost:3001', { "autoConnect": false })
-//export const socket = io.connect('http://localhost:3001');
 
 
 export function Home() {
@@ -10,21 +9,11 @@ export function Home() {
     const [username, setUsername] = useState("");
     const [roomToJoin, setRoomToJoin] = useState("");
     const [availableRooms, setAvailableRooms] = useState([]);
-    const [roomIsFull, setRoomIsFull] = useState(false);
-
-    // const [toggleChat, setToggleChat] = useState(false)
 
     const navigate = useNavigate();
 
     useEffect(() => {
         socket.connect();
-
-        socket.on("fullRoom", function (roomThatsFull, userWhoCantJoin) {
-            if (userWhoCantJoin === username) {
-                setRoomIsFull(true);
-            }
-            
-        });
 
     }, []);
 
@@ -39,10 +28,7 @@ export function Home() {
         }
         socket.emit("join", room, user);
 
-        if (!roomIsFull) {
-            navigate(`/${room}/${username}`);
-        }
-        
+        navigate(`/${room}/${username}`);
     }
 
     let roomsHTML = availableRooms.map((room, i) => {
@@ -56,10 +42,6 @@ export function Home() {
 
     return (<>
         <h1>hej och välkommen {username}</h1>
-        {roomIsFull && <div>
-            <h3>Sorry room is full or finished, try another room or create a new one</h3>
-        </div>}
-
         <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
         <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
         <button onClick={() => { join(roomToJoin) }}>join</button>

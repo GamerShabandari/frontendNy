@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
 const fieldsJSON = require("../assets/fields.json");
-const colorsJSON = require("../assets/colors.json");
 
 
 export function Chat() {
@@ -17,6 +16,9 @@ export function Chat() {
     const [myColor, setMyColor] = useState("white");
     const [gamerOver, setGamerOver] = useState(false);
     const [result, setResult] = useState("");
+
+
+    const [roomIsFull, setRoomIsFull] = useState(false);
 
 
     useEffect(() => {
@@ -56,6 +58,14 @@ export function Chat() {
             //alert(result)
             setResult(resultInRoom)
             setGamerOver(true)
+
+        });
+
+
+        socket.on("fullRoom", function (roomThatsFull, userWhoCantJoin) {
+            if (userWhoCantJoin === user && roomThatsFull === room) {
+                setRoomIsFull(true);
+            }
 
         });
 
@@ -153,32 +163,42 @@ export function Chat() {
 
     return (
         <>
-            welcome {user} to room {room}
-            <br />
-            <div>{renderColorpicker}</div>
 
-            <div>{renderUsersInRoom}</div>
+            {roomIsFull && <div>
+                <h3>Sorry room is full or finished, try another room or create a new one</h3>
+            </div>}
 
-            <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
-            <button onClick={sendMessage}>send</button>
+            {!roomIsFull && <>
 
-            <ul>
-                {chatList}
-            </ul>
+                welcome {user} to room {room}
+                <br />
+                <div>{renderColorpicker}</div>
 
-            <div>
-                <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
-            </div>
+                <div>{renderUsersInRoom}</div>
 
-            {gamerOver && <div><h1>GAME OVER! Your result was: {result}</h1></div>}
+                <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
+                <button onClick={sendMessage}>send</button>
 
-            {!gamerOver && <>
-                <div id="grid">{renderGrid}</div>
+                <ul>
+                    {chatList}
+                </ul>
+
+                <div>
+                    <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
+                </div>
+
+                {gamerOver && <div><h1>GAME OVER! Your result was: {result}</h1></div>}
+
+                {!gamerOver && <>
+                    <div id="grid">{renderGrid}</div>
+                </>}
+
+
+
+                <div id="facitGrid">{renderFacit}</div>
+
             </>}
 
-
-
-            <div id="facitGrid">{renderFacit}</div>
         </>
     )
 }
