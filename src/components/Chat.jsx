@@ -16,6 +16,9 @@ export function Chat() {
     const [myColor, setMyColor] = useState("white");
     const [gamerOver, setGamerOver] = useState(false);
     const [result, setResult] = useState("");
+    const [timeM, setTimeM] = useState("");
+    const [timeS, setTimeS] = useState("");
+    const [timeH, setTimeH] = useState("");
 
 
     const [roomIsFull, setRoomIsFull] = useState(false);
@@ -54,9 +57,12 @@ export function Chat() {
             setFieldsArray([...history])
         });
 
-        socket.on("gameOver", function (resultInRoom) {
-            //alert(result)
+        socket.on("gameOver", function (resultInRoom, timeTaken) {
+            console.log(timeTaken.m)
             setResult(resultInRoom)
+            setTimeH(timeTaken.h.toString())
+            setTimeM(timeTaken.m.toString())
+            setTimeS(timeTaken.s.toString())
             setGamerOver(true)
 
         });
@@ -187,7 +193,7 @@ export function Chat() {
                     <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
                 </div>
 
-                {gamerOver && <div><h1>GAME OVER! Your result was: {result}</h1></div>}
+                {gamerOver && <div><h1>GAME OVER! Your result was: {result} - time taken: s:{timeS}m:{timeM}h:{timeH}</h1></div>}
 
                 {!gamerOver && <>
                     <div id="grid">{renderGrid}</div>
