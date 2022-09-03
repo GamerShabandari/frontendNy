@@ -23,7 +23,6 @@ export function Chat() {
         setFieldsArray([...fieldsJSON])
 
         socket.emit("getMyRoom", room);
-        // console.log("begärde rum info");
 
         socket.on("updateColors", function (updatedColors) {
             setColorsArray(updatedColors);
@@ -146,9 +145,6 @@ export function Chat() {
             <div>{renderColorpicker}</div>
 
             <div>{renderUsersInRoom}</div>
-
-
-
 
             <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
             <button onClick={sendMessage}>send</button>
