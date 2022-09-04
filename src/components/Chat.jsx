@@ -19,6 +19,7 @@ export function Chat() {
     const [timeM, setTimeM] = useState(0);
     const [timeS, setTimeS] = useState(0);
     const [timeH, setTimeH] = useState(0);
+    const [saveDone, setDaveDone] = useState(false);
 
 
     const [roomIsFull, setRoomIsFull] = useState(false);
@@ -34,6 +35,11 @@ export function Chat() {
         socket.on("updateColors", function (updatedColors) {
             setColorsArray(updatedColors);
         });
+
+        socket.on("drawingSaved", function () {
+            setDaveDone(true);
+        });
+        
 
         socket.on("chatting", function (message) {
 
@@ -76,6 +82,7 @@ export function Chat() {
 
         socket.on("waitingForEveryOne", function (allUsersStatus) {
             setUsersInRoom([...allUsersStatus])
+            console.log(usersInRoom);
         });
 
     }, []);
@@ -210,7 +217,7 @@ export function Chat() {
 
                 {gamerOver && <>
                     <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
-                    <button onClick={saveDrawing}>Save this drawing</button>
+                   {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>} 
                 </>}
 
                 {!gamerOver && <>
