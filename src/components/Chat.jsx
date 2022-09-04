@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
+import { useNavigate } from "react-router-dom";
 const fieldsJSON = require("../assets/fields.json");
 
 
 export function Chat() {
 
     let { room, user } = useParams();
+    const navigate = useNavigate();
     const [facit, setFacit] = useState([]);
     const [message, setMessage] = useState("");
     const [chatArray, setChatArray] = useState([]);
@@ -20,8 +22,6 @@ export function Chat() {
     const [timeS, setTimeS] = useState(0);
     const [timeH, setTimeH] = useState(0);
     const [saveDone, setDaveDone] = useState(false);
-
-
     const [roomIsFull, setRoomIsFull] = useState(false);
 
 
@@ -190,6 +190,7 @@ export function Chat() {
 
             {roomIsFull && <div>
                 <h3>Sorry room is full or finished, try another room or create a new one</h3>
+                <button onClick={()=>{navigate(`/`)}}>Back Home</button>
             </div>}
 
             {!roomIsFull && <>

@@ -11,6 +11,7 @@ export function Home() {
     const [availableRooms, setAvailableRooms] = useState([]);
     const [availableDrawings, setAvailableDrawings] = useState([]);
     const [chosenDrawing, setChosenDrawing] = useState([]);
+    const [showError, setShowError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -31,6 +32,11 @@ export function Home() {
 
 
     function join(room) {
+
+        if (username.length < 1) {
+            setShowError(true);
+            return
+        }
         let user = {
             nickname: username,
             isDone: false
@@ -57,9 +63,7 @@ export function Home() {
     let drawingsHTML = availableDrawings.map((drawing, i) => {
         return (
             <div key={i}>
-                {/* <h3 onClick={() => { join(room.roomName) }}>{room.roomName}</h3> */}
                 <h3 onClick={() => { showDrawing(i) }}>name: {drawing.name} - time taken: {drawing.timeTaken} - result: {drawing.result}</h3>
-
             </div>
         )
     })
@@ -79,11 +83,14 @@ export function Home() {
         <h1>Welcome {username}</h1>
         <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
         <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
-        <button onClick={() => { join(roomToJoin) }}>join</button>
+        <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
+        {showError && <div>You must first chose a nickname to join a room</div> }
 
-        
+        <br />
+        <br />
         <div>{availableRooms.length} active rooms</div>
-        <div>Rooms: {roomsHTML}</div>
+        <br />
+        <div>Rooms to join: {roomsHTML}</div>
         <div>Drawings: {drawingsHTML}</div>
 
         <div>
