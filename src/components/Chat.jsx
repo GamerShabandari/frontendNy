@@ -58,29 +58,12 @@ export function Chat() {
         });
 
         socket.on("gameOver", function (resultInRoom, timeTaken) {
-            console.log(timeTaken.m)
-
-            // if (timeTaken.h < 10) {
-            //     timeTaken.h = "0" + timeTaken.h
-            // }
-            // if (timeTaken.m < 10) {
-            //     timeTaken.m = "0" + timeTaken.m
-            // }
-            // if (timeTaken.s < 10) {
-            //     timeTaken.s = "0" + timeTaken.s
-            // }
-
             setResult(resultInRoom)
             setTimeH(timeTaken.h)
             setTimeM(timeTaken.m)
             setTimeS(timeTaken.s)
 
-
-            // setTimeH(timeTaken.h.toString())
-            // setTimeM(timeTaken.m.toString())
-            // setTimeS(timeTaken.s.toString())
             setGamerOver(true)
-
         });
 
 
@@ -128,16 +111,17 @@ export function Chat() {
         socket.emit("timeToCheckFacit", room, user);
     }
 
+    function saveDrawing() {
+        console.log(fieldsArray);
+        socket.emit("saveThisDrawing", fieldsArray, room, result, timeH, timeM, timeS);
+    }
 
-    let chatList = chatArray.map((message, i) => {
-        return (
-            <li key={i}>
-                {message.nickname}: {message.text}
-            </li>
-        )
-    })
 
-    const paint = (field, e) => {
+
+
+    //const paint = (field, e) => {
+
+    function paint( field, e ) {
 
         fieldsArray.find(f => {
             if (f.position === field.position) {
@@ -170,7 +154,7 @@ export function Chat() {
     let renderColorpicker = colorsArray.map((color, i) => {
         return (
             <div key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
-            >välj färg</div>
+            >Pick Color</div>
         );
     });
 
@@ -181,12 +165,20 @@ export function Chat() {
 
                 style={{ backgroundColor: "red", padding: "10px", color: "white" }}
             >{user.nickname}</div>
-            {user.isDone && <div>Är klar</div>}
+            {user.isDone && <div>Is Done...</div>}
 
         </>
 
         );
     });
+
+    let chatList = chatArray.map((message, i) => {
+        return (
+            <li key={i}>
+                {message.nickname}: {message.text}
+            </li>
+        )
+    })
 
 
 
@@ -213,10 +205,13 @@ export function Chat() {
                 </ul>
 
                 <div>
-                    <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
+                    <button onClick={timeToCheckFacit}>Im Done!</button>
                 </div>
 
-                {gamerOver && <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>}
+                {gamerOver && <>
+                    <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    <button onClick={saveDrawing}>Save this drawing</button>
+                </>}
 
                 {!gamerOver && <>
                     <div id="grid">{renderGrid}</div>
