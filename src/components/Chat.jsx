@@ -39,7 +39,7 @@ export function Chat() {
         socket.on("drawingSaved", function () {
             setDaveDone(true);
         });
-        
+
 
         socket.on("chatting", function (message) {
 
@@ -124,11 +124,7 @@ export function Chat() {
     }
 
 
-
-
-    //const paint = (field, e) => {
-
-    function paint( field, e ) {
+    function paint(field, e) {
 
         fieldsArray.find(f => {
             if (f.position === field.position) {
@@ -211,13 +207,14 @@ export function Chat() {
                     {chatList}
                 </ul>
 
-                <div>
+                {!gamerOver && <div>
                     <button onClick={timeToCheckFacit}>Im Done!</button>
-                </div>
+                </div>}
+
 
                 {gamerOver && <>
                     <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
-                   {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>} 
+                    {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
                 </>}
 
                 {!gamerOver && <>
