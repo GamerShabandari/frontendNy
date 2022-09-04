@@ -16,9 +16,9 @@ export function Chat() {
     const [myColor, setMyColor] = useState("white");
     const [gamerOver, setGamerOver] = useState(false);
     const [result, setResult] = useState("");
-    const [timeM, setTimeM] = useState("");
-    const [timeS, setTimeS] = useState("");
-    const [timeH, setTimeH] = useState("");
+    const [timeM, setTimeM] = useState(0);
+    const [timeS, setTimeS] = useState(0);
+    const [timeH, setTimeH] = useState(0);
 
 
     const [roomIsFull, setRoomIsFull] = useState(false);
@@ -58,13 +58,12 @@ export function Chat() {
         });
 
         socket.on("gameOver", function (resultInRoom, timeTaken) {
-            console.log(timeTaken.m)
             setResult(resultInRoom)
-            setTimeH(timeTaken.h.toString())
-            setTimeM(timeTaken.m.toString())
-            setTimeS(timeTaken.s.toString())
-            setGamerOver(true)
+            setTimeH(timeTaken.h)
+            setTimeM(timeTaken.m)
+            setTimeS(timeTaken.s)
 
+            setGamerOver(true)
         });
 
 
@@ -75,11 +74,14 @@ export function Chat() {
 
         });
 
+        socket.on("waitingForEveryOne", function (allUsersStatus) {
+            setUsersInRoom([...allUsersStatus])
+        });
 
     }, []);
 
     socket.on("drawing", function (pixelToUpdate) {
-        console.log("här"); //// hamnar här massa gånger av någon anledning 
+
         let newArray = fieldsArray;
         for (let i = 0; i < newArray.length; i++) {
             const pixel = newArray[i];
@@ -106,19 +108,20 @@ export function Chat() {
     }
 
     function timeToCheckFacit() {
-        socket.emit("timeToCheckFacit", room);
+        socket.emit("timeToCheckFacit", room, user);
+    }
+
+    function saveDrawing() {
+        console.log(fieldsArray);
+        socket.emit("saveThisDrawing", fieldsArray, room, result, timeH, timeM, timeS);
     }
 
 
-    let chatList = chatArray.map((message, i) => {
-        return (
-            <li key={i}>
-                {message.nickname}: {message.text}
-            </li>
-        )
-    })
 
-    const paint = (field, e) => {
+
+    //const paint = (field, e) => {
+
+    function paint( field, e ) {
 
         fieldsArray.find(f => {
             if (f.position === field.position) {
@@ -151,19 +154,31 @@ export function Chat() {
     let renderColorpicker = colorsArray.map((color, i) => {
         return (
             <div key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
-            >välj färg</div>
+            >Pick Color</div>
         );
     });
 
     let renderUsersInRoom = usersInRoom.map((user, i) => {
-        return (
+        return (<>
             <div
                 key={i}
 
                 style={{ backgroundColor: "red", padding: "10px", color: "white" }}
             >{user.nickname}</div>
+            {user.isDone && <div>Is Done...</div>}
+
+        </>
+
         );
     });
+
+    let chatList = chatArray.map((message, i) => {
+        return (
+            <li key={i}>
+                {message.nickname}: {message.text}
+            </li>
+        )
+    })
 
 
 
@@ -190,10 +205,13 @@ export function Chat() {
                 </ul>
 
                 <div>
-                    <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
+                    <button onClick={timeToCheckFacit}>Im Done!</button>
                 </div>
 
-                {gamerOver && <div><h1>GAME OVER! Your result was: {result} - time taken: s:{timeS}m:{timeM}h:{timeH}</h1></div>}
+                {gamerOver && <>
+                    <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    <button onClick={saveDrawing}>Save this drawing</button>
+                </>}
 
                 {!gamerOver && <>
                     <div id="grid">{renderGrid}</div>

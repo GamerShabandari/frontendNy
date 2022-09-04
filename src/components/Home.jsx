@@ -9,6 +9,8 @@ export function Home() {
     const [username, setUsername] = useState("");
     const [roomToJoin, setRoomToJoin] = useState("");
     const [availableRooms, setAvailableRooms] = useState([]);
+    const [availableDrawings, setAvailableDrawings] = useState([]);
+    const [chosenDrawing, setChosenDrawing] = useState([]);
 
     const navigate = useNavigate();
 
@@ -19,17 +21,29 @@ export function Home() {
 
     socket.on("availableRooms", function (rooms) {
         setAvailableRooms([...rooms])
-        console.log(rooms)
+
     });
+
+    socket.on("savedDrawings", function (drawings) {
+        setAvailableDrawings([...drawings])
+
+    });
+
 
     function join(room) {
         let user = {
-            nickname: username
+            nickname: username,
+            isDone: false
         }
         socket.emit("join", room, user);
 
         navigate(`/${room}/${username}`);
     }
+
+    function showDrawing(index) {
+        setChosenDrawing([...availableDrawings[index].imageField])
+    }
+
 
     let roomsHTML = availableRooms.map((room, i) => {
         return (
@@ -40,15 +54,45 @@ export function Home() {
         )
     })
 
+    let drawingsHTML = availableDrawings.map((drawing, i) => {
+        return (
+            <div key={i}>
+                {/* <h3 onClick={() => { join(room.roomName) }}>{room.roomName}</h3> */}
+                <h3 onClick={() => { showDrawing(i) }}>name: {drawing.name} - time taken: {drawing.timeTaken} - result: {drawing.result}</h3>
+
+            </div>
+        )
+    })
+
+    let renderDrawing = chosenDrawing.map((pixel) => {
+        return (
+            <div
+                key={pixel.position}
+                id={pixel.position}
+                className="pixelFacit"
+                style={{ backgroundColor: pixel.color }}
+            ></div>
+        );
+    });
+
     return (<>
-        <h1>hej och välkommen {username}</h1>
+        <h1>Welcome {username}</h1>
         <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
         <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
         <button onClick={() => { join(roomToJoin) }}>join</button>
 
-        <div>{username} - {roomToJoin}</div>
-        {availableRooms.length}
-        {roomsHTML}
+        
+        <div>{availableRooms.length} active rooms</div>
+        <div>Rooms: {roomsHTML}</div>
+        <div>Drawings: {drawingsHTML}</div>
+
+        <div>
+            <div id="drawingPreviewGrid">
+                {renderDrawing}
+            </div>
+
+
+        </div>
 
     </>)
 
