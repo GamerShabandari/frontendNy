@@ -16,9 +16,9 @@ export function Chat() {
     const [myColor, setMyColor] = useState("white");
     const [gamerOver, setGamerOver] = useState(false);
     const [result, setResult] = useState("");
-    const [timeM, setTimeM] = useState("");
-    const [timeS, setTimeS] = useState("");
-    const [timeH, setTimeH] = useState("");
+    const [timeM, setTimeM] = useState(0);
+    const [timeS, setTimeS] = useState(0);
+    const [timeH, setTimeH] = useState(0);
 
 
     const [roomIsFull, setRoomIsFull] = useState(false);
@@ -59,10 +59,26 @@ export function Chat() {
 
         socket.on("gameOver", function (resultInRoom, timeTaken) {
             console.log(timeTaken.m)
+
+            // if (timeTaken.h < 10) {
+            //     timeTaken.h = "0" + timeTaken.h
+            // }
+            // if (timeTaken.m < 10) {
+            //     timeTaken.m = "0" + timeTaken.m
+            // }
+            // if (timeTaken.s < 10) {
+            //     timeTaken.s = "0" + timeTaken.s
+            // }
+
             setResult(resultInRoom)
-            setTimeH(timeTaken.h.toString())
-            setTimeM(timeTaken.m.toString())
-            setTimeS(timeTaken.s.toString())
+            setTimeH(timeTaken.h)
+            setTimeM(timeTaken.m)
+            setTimeS(timeTaken.s)
+
+
+            // setTimeH(timeTaken.h.toString())
+            // setTimeM(timeTaken.m.toString())
+            // setTimeS(timeTaken.s.toString())
             setGamerOver(true)
 
         });
@@ -75,11 +91,14 @@ export function Chat() {
 
         });
 
+        socket.on("waitingForEveryOne", function (allUsersStatus) {
+            setUsersInRoom([...allUsersStatus])
+        });
 
     }, []);
 
     socket.on("drawing", function (pixelToUpdate) {
-        console.log("här"); //// hamnar här massa gånger av någon anledning 
+
         let newArray = fieldsArray;
         for (let i = 0; i < newArray.length; i++) {
             const pixel = newArray[i];
@@ -106,7 +125,7 @@ export function Chat() {
     }
 
     function timeToCheckFacit() {
-        socket.emit("timeToCheckFacit", room);
+        socket.emit("timeToCheckFacit", room, user);
     }
 
 
@@ -156,12 +175,16 @@ export function Chat() {
     });
 
     let renderUsersInRoom = usersInRoom.map((user, i) => {
-        return (
+        return (<>
             <div
                 key={i}
 
                 style={{ backgroundColor: "red", padding: "10px", color: "white" }}
             >{user.nickname}</div>
+            {user.isDone && <div>Är klar</div>}
+
+        </>
+
         );
     });
 
@@ -193,7 +216,7 @@ export function Chat() {
                     <button onClick={timeToCheckFacit}>Rätta synkat i rum</button>
                 </div>
 
-                {gamerOver && <div><h1>GAME OVER! Your result was: {result} - time taken: s:{timeS}m:{timeM}h:{timeH}</h1></div>}
+                {gamerOver && <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>}
 
                 {!gamerOver && <>
                     <div id="grid">{renderGrid}</div>

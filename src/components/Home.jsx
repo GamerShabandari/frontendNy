@@ -24,7 +24,8 @@ export function Home() {
 
     function join(room) {
         let user = {
-            nickname: username
+            nickname: username,
+            isDone: false
         }
         socket.emit("join", room, user);
 
