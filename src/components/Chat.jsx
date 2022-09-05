@@ -128,10 +128,15 @@ export function Chat() {
 
         fieldsArray.find(f => {
             if (f.position === field.position) {
-                field.color = myColor
+                if (field.color != "white") {
+                    field.color = "white";
+                }
+                else {
+                    field.color = myColor;
+                }
                 socket.emit("draw", field, room)
-                console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
-                console.log(fieldsArray)
+                //console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
+                //console.log(fieldsArray)
             }
         })
     }
@@ -191,7 +196,7 @@ export function Chat() {
 
             {roomIsFull && <div>
                 <h3>Sorry room is full or finished, try another room or create a new one</h3>
-                <button onClick={()=>{navigate(`/`)}}>Back Home</button>
+                <button onClick={() => { navigate(`/`) }}>Back Home</button>
             </div>}
 
             {!roomIsFull && <>

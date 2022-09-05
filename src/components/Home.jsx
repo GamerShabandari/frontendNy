@@ -52,18 +52,22 @@ export function Home() {
 
 
     let roomsHTML = availableRooms.map((room, i) => {
+        console.log(room)
         return (
-            <div key={i}>
-                <h3 onClick={() => { join(room.roomName) }}>{room.roomName}</h3>
-
+            <div className="room-list" key={i}>
+                <h3>{room.roomName}</h3>
+                <p> {room.users.length}/8</p>
+                <button onClick={() => { join(room.roomName) }}> Join</button>
             </div>
         )
     })
 
     let drawingsHTML = availableDrawings.map((drawing, i) => {
         return (
-            <div key={i}>
-                <h3 onClick={() => { showDrawing(i) }}>name: {drawing.name} - time taken: {drawing.timeTaken} - result: {drawing.result}%</h3>
+            <div className="room-list" key={i}>
+                <h3>Room name: {drawing.name} - </h3>
+                <p>time taken: {drawing.timeTaken} - result: {drawing.result}%</p>
+                <button onClick={() => { showDrawing(i) }}>Image</button>
             </div>
         )
     })
