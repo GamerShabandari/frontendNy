@@ -63,7 +63,7 @@ export function Home() {
     let drawingsHTML = availableDrawings.map((drawing, i) => {
         return (
             <div key={i}>
-                <h3 onClick={() => { showDrawing(i) }}>name: {drawing.name} - time taken: {drawing.timeTaken} - result: {drawing.result}</h3>
+                <h3 onClick={() => { showDrawing(i) }}>name: {drawing.name} - time taken: {drawing.timeTaken} - result: {drawing.result}%</h3>
             </div>
         )
     })

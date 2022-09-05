@@ -214,7 +214,7 @@ export function Chat() {
 
 
                 {gamerOver && <>
-                    <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
                     {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
                 </>}
 
