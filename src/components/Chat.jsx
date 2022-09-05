@@ -131,6 +131,7 @@ export function Chat() {
                 field.color = myColor
                 socket.emit("draw", field, room)
                 console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
+                console.log(fieldsArray)
             }
         })
     }
