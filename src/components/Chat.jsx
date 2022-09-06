@@ -39,8 +39,7 @@ export function Chat() {
         socket.on("drawingSaved", function () {
             setDaveDone(true);
         });
-
-
+        
         socket.on("chatting", function (message) {
 
             let updatedChatArray = chatArray
@@ -87,6 +86,11 @@ export function Chat() {
 
     }, []);
 
+    // socket.on("usersUpdate", function () {
+    //     console.log("fdfsdfs");
+    //     //setUsersInRoom([...usersList]);
+    // });
+
     socket.on("drawing", function (pixelToUpdate) {
 
         let newArray = fieldsArray;
@@ -123,6 +127,12 @@ export function Chat() {
         socket.emit("saveThisDrawing", fieldsArray, room, result, timeH, timeM, timeS);
     }
 
+    function leaveRoom(){
+        console.log(user + " vill lämna rum: " + room);
+        navigate(`/${user}`);
+        socket.disconnect();
+    }
+
 
     function paint(field, e) {
 
@@ -135,8 +145,6 @@ export function Chat() {
                     field.color = myColor;
                 }
                 socket.emit("draw", field, room)
-                //console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
-                //console.log(fieldsArray)
             }
         })
     }
@@ -202,6 +210,7 @@ export function Chat() {
             {!roomIsFull && <>
 
                 welcome {user} to room {room}
+                <button onClick={leaveRoom}>Leave Room</button>
                 <br />
                 <div>{renderColorpicker}</div>
 
