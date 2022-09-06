@@ -48,3 +48,18 @@ code {
   justify-content: center;
   margin-top: 20px;
 }
+
+.room-list{
+
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+  display: flex;
+  flex-direction: row;
+}
+
+.imgContainer{
+  border: 1px solid blue;
+  width:fit-content;
+  margin: auto;
+}

@@ -11,6 +11,7 @@ function App() {
         <Routes>
           <Route index element={<Home />}></Route>
           <Route path="/:room/:user" element={<Chat />}></Route>
+          <Route path="/:userParam" element={<Home />}></Route>
         </Routes>
       </BrowserRouter>
       {/* <Home></Home> */}

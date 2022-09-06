@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
+import { useNavigate } from "react-router-dom";
 const fieldsJSON = require("../assets/fields.json");
 
 
 export function Chat() {
 
     let { room, user } = useParams();
+    const navigate = useNavigate();
     const [facit, setFacit] = useState([]);
     const [message, setMessage] = useState("");
     const [chatArray, setChatArray] = useState([]);
@@ -19,8 +21,7 @@ export function Chat() {
     const [timeM, setTimeM] = useState(0);
     const [timeS, setTimeS] = useState(0);
     const [timeH, setTimeH] = useState(0);
-
-
+    const [saveDone, setDaveDone] = useState(false);
     const [roomIsFull, setRoomIsFull] = useState(false);
 
 
@@ -35,6 +36,10 @@ export function Chat() {
             setColorsArray(updatedColors);
         });
 
+        socket.on("drawingSaved", function () {
+            setDaveDone(true);
+        });
+        
         socket.on("chatting", function (message) {
 
             let updatedChatArray = chatArray
@@ -76,9 +81,20 @@ export function Chat() {
 
         socket.on("waitingForEveryOne", function (allUsersStatus) {
             setUsersInRoom([...allUsersStatus])
+            console.log(usersInRoom);
         });
 
+         socket.on("usersUpdate", function (usersUpdatedList) {
+        console.log("fdfsdfs");
+        setUsersInRoom([...usersUpdatedList]);
+    });
+
     }, []);
+
+    // socket.on("usersUpdate", function () {
+    //     console.log("fdfsdfs");
+    //     //setUsersInRoom([...usersList]);
+    // });
 
     socket.on("drawing", function (pixelToUpdate) {
 
@@ -116,18 +132,24 @@ export function Chat() {
         socket.emit("saveThisDrawing", fieldsArray, room, result, timeH, timeM, timeS);
     }
 
+    function leaveRoom(){
+      //  console.log(user + " vill lämna rum: " + room);
+        navigate(`/${user}`);
+        socket.disconnect();
+    }
 
 
-
-    //const paint = (field, e) => {
-
-    function paint( field, e ) {
+    function paint(field, e) {
 
         fieldsArray.find(f => {
             if (f.position === field.position) {
-                field.color = myColor
+                if (field.color !== "white") {
+                    field.color = "white";
+                }
+                else {
+                    field.color = myColor;
+                }
                 socket.emit("draw", field, room)
-                console.log("ritade på ruta: " + field.position + " med färgen: " + field.color + " i rum: " + room);
             }
         })
     }
@@ -187,11 +209,13 @@ export function Chat() {
 
             {roomIsFull && <div>
                 <h3>Sorry room is full or finished, try another room or create a new one</h3>
+                <button onClick={() => { navigate(`/`) }}>Back Home</button>
             </div>}
 
             {!roomIsFull && <>
 
                 welcome {user} to room {room}
+                <button onClick={leaveRoom}>Leave Room</button>
                 <br />
                 <div>{renderColorpicker}</div>
 
@@ -204,13 +228,14 @@ export function Chat() {
                     {chatList}
                 </ul>
 
-                <div>
+                {!gamerOver && <div>
                     <button onClick={timeToCheckFacit}>Im Done!</button>
-                </div>
+                </div>}
+
 
                 {gamerOver && <>
-                    <div><h1>GAME OVER! Your result was: {result} - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
-                    <button onClick={saveDrawing}>Save this drawing</button>
+                    <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
                 </>}
 
                 {!gamerOver && <>
@@ -219,7 +244,7 @@ export function Chat() {
 
 
 
-                <div id="facitGrid">{renderFacit}</div>
+                <div className="imgContainer" id="facitGrid">{renderFacit}</div>
 
             </>}
 
