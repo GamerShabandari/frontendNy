@@ -157,7 +157,6 @@ export function Chat() {
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth",  block: "end", inline: "nearest" })
-        //this.messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
     let renderGrid = fieldsArray.map(field => {
@@ -248,8 +247,6 @@ export function Chat() {
                 {!gamerOver && <>
                     <div id="grid">{renderGrid}</div>
                 </>}
-
-
 
                 <div className="imgContainer" id="facitGrid">{renderFacit}</div>
 
