@@ -112,7 +112,9 @@ export function Chat() {
     });
 
     function sendMessage() {
+
         socket.emit("chatt", room, user, message);
+        setMessage("")
     }
 
 
@@ -135,7 +137,7 @@ export function Chat() {
     }
 
     function leaveRoom() {
-        //  console.log(user + " vill lämna rum: " + room);
+
         navigate(`/${user}`);
         socket.disconnect();
     }
@@ -157,7 +159,7 @@ export function Chat() {
     }
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
     let renderGrid = fieldsArray.map(field => {
@@ -181,19 +183,25 @@ export function Chat() {
 
     let renderColorpicker = colorsArray.map((color, i) => {
         return (
-            <div key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color, padding: "10px", width: "30px", color: "white" }}
-            >Pick Color</div>
+            <div className="colors" key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color }}
+            ></div>
         );
     });
 
     let renderUsersInRoom = usersInRoom.map((user, i) => {
         return (<>
-            <div
-                key={i}
+            <li key={i}>
 
-                style={{ backgroundColor: "red", padding: "10px", color: "white" }}
-            >{user.nickname}
+                <Player className="userIcon"
+                    autoplay
+                    keepLastFrame
+                    src="https://assets2.lottiefiles.com/packages/lf20_fgp8rk11.json"
+                    style={{ height: '20px', width: '20px' }}
+                >
+                    <Controls visible={false} />
+                </Player>
 
+                {": " + user.nickname}
                 {user.isDone && <div>
 
                     <Player
@@ -205,7 +213,7 @@ export function Chat() {
                         <Controls visible={false} />
                     </Player>
                 </div>}
-            </div>
+            </li>
 
 
         </>
@@ -216,9 +224,9 @@ export function Chat() {
     let chatList = chatArray.map((message, i) => {
         return (
             <div key={i}>
-                {message.nickname === user && <div style={{ color: "#533483", textAlign: "right" }}>{message.nickname}: {message.text}</div> }
-                
-                {message.nickname !== user && <div style={{ color: "#E94560", textAlign: "left" }}>{message.nickname}: {message.text}</div> }
+                {message.nickname === user && <div className="chat-right"><p className="chat-nickname">{message.nickname}</p><p className="chat-text">{message.text}</p></div>}
+
+                {message.nickname !== user && <div className="chat-left"><p className="chat-nickname">{message.nickname}</p><p className="chat-text">{message.text}</p></div>}
             </div>
         )
     })
@@ -235,36 +243,62 @@ export function Chat() {
 
             {!roomIsFull && <>
 
-                welcome {user} to room {room}
-                <button onClick={leaveRoom}>Leave Room</button>
-                <br />
-                <div>{renderColorpicker}</div>
-                <div>{renderUsersInRoom}</div>
+                <header>
+                    <h2>Welcome {user} to room {room}</h2>
+                    <button onClick={leaveRoom}>Leave Room</button>
+                </header>
+                <div className="colorsArray">{renderColorpicker}
 
-                <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
-                <button onClick={sendMessage}>send</button>
 
-                <div id="chatContainer">
-                    {chatList}
-                    <div ref={messagesEndRef} />
+                    {!gamerOver && <div>
+                        <button onClick={timeToCheckFacit}>Im Done!</button>
+                    </div>}
+
+
+                    {gamerOver && <>
+                        <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                        {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
+                    </>}
                 </div>
 
-                {!gamerOver && <div>
-                    <button onClick={timeToCheckFacit}>Im Done!</button>
-                </div>}
+                <main>
+                    <div>
+                        <h4>Users in room:</h4>
+                        <ul>{renderUsersInRoom}</ul>
+                        <h4>Chat <Player
+                            autoplay
+                            loop
+                            src="https://assets5.lottiefiles.com/private_files/lf30_z588h1j0.json"
+                            style={{ height: '50px', width: '50px' }}
+                        >
+                            <Controls visible={false} />
+                        </Player></h4>
+
+                        <div id="chatContainer">
+                            {chatList}
+                            <div className="chatMessage">
+                                <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
+                                <button disabled={message.length < 1} onClick={sendMessage}>send</button>
+                            </div>
+                            <div ref={messagesEndRef} />
 
 
-                {gamerOver && <>
-                    <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
-                    {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
-                </>}
+                        </div>
 
-                {!gamerOver && <>
-                    <div id="grid">{renderGrid}</div>
-                </>}
+                    </div>
 
-                <div className="imgContainer" id="facitGrid">{renderFacit}</div>
 
+                    {!gamerOver && <>
+                        <div id="grid">{renderGrid}</div>
+                    </>}
+
+                    <div className="facit">
+                        <h4>Recreate this image. Time is ticking!</h4>
+                        <div className="imgContainer" id="facitGrid">
+                            {renderFacit}
+                        </div>
+                    </div>
+                </main>
             </>}
 
         </>

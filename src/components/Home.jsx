@@ -76,7 +76,7 @@ export function Home() {
         console.log(room)
         return (
             <div className="room-list" key={i}>
-                <h3>{room.roomName}</h3>
+                <h4>{room.roomName}</h4>
                 <p> {room.users.length}/8</p>
                 {room.roomIsFull && <h4>Room is full</h4>}
                 {!room.roomIsFull && <button onClick={() => { join(room.roomName) }}>Join</button>}
@@ -87,9 +87,9 @@ export function Home() {
     let drawingsHTML = availableDrawings.map((drawing, i) => {
         return (
             <div className="room-list" key={i}>
-                <h3>Room name: {drawing.name} - </h3>
+                <h4>Room name: {drawing.name} - </h4>
                 <p>time taken: {drawing.timeTaken} - result: {drawing.result}%</p>
-                <button onClick={() => { showDrawing(i) }}>Image</button>
+                <button onClick={() => { showDrawing(i) }}>View Image</button>
             </div>
         )
     })
@@ -119,19 +119,19 @@ export function Home() {
         </aside>
 
 
-        <main>
-            <div>{availableRooms.length} active rooms</div>
+        <div>
+            <h2>{availableRooms.length} active rooms</h2>
 
-            <div>Rooms to join: {roomsHTML}</div>
-            <div>Drawings: {drawingsHTML}</div>
+            <h3>Rooms to join:</h3> {roomsHTML}
+            <h3>Drawings:</h3> {drawingsHTML}
 
-            <div>
+
                 <div id="drawingPreviewGrid">
                     {renderDrawing}
                 </div>
-            </div>
+            
 
-        </main>
+        </div>
 
 
 
