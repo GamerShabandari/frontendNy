@@ -89,7 +89,7 @@ export function Home() {
             <div className="room-list" key={i}>
                 <h4>Room name: {drawing.name} - </h4>
                 <p>time taken: {drawing.timeTaken} - result: {drawing.result}%</p>
-                <button onClick={() => { showDrawing(i) }}>Image</button>
+                <button onClick={() => { showDrawing(i) }}>View Image</button>
             </div>
         )
     })

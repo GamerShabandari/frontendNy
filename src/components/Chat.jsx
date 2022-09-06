@@ -112,7 +112,9 @@ export function Chat() {
     });
 
     function sendMessage() {
+
         socket.emit("chatt", room, user, message);
+        setMessage("")
     }
 
 
@@ -135,7 +137,7 @@ export function Chat() {
     }
 
     function leaveRoom() {
-        //  console.log(user + " vill lämna rum: " + room);
+
         navigate(`/${user}`);
         socket.disconnect();
     }
@@ -157,7 +159,7 @@ export function Chat() {
     }
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
     let renderGrid = fieldsArray.map(field => {
@@ -188,8 +190,18 @@ export function Chat() {
 
     let renderUsersInRoom = usersInRoom.map((user, i) => {
         return (<>
-            <li key={i}>{user.nickname}
+            <li key={i}>
 
+                <Player className="userIcon"
+                    autoplay
+                    keepLastFrame
+                    src="https://assets2.lottiefiles.com/packages/lf20_fgp8rk11.json"
+                    style={{ height: '20px', width: '20px' }}
+                >
+                    <Controls visible={false} />
+                </Player>
+
+                {": " + user.nickname}
                 {user.isDone && <div>
 
                     <Player
@@ -253,15 +265,26 @@ export function Chat() {
                     <div>
                         <h4>Users in room:</h4>
                         <ul>{renderUsersInRoom}</ul>
-                        <h4>Start chatting!</h4>
+                        <h4>Chat <Player
+                            autoplay
+                            loop
+                            src="https://assets5.lottiefiles.com/private_files/lf30_z588h1j0.json"
+                            style={{ height: '50px', width: '50px' }}
+                        >
+                            <Controls visible={false} />
+                        </Player></h4>
+
                         <div id="chatContainer">
                             {chatList}
                             <div className="chatMessage">
-                            <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
-                            <button onClick={sendMessage}>send</button>
+                                <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
+                                <button disabled={message.length < 1} onClick={sendMessage}>send</button>
                             </div>
                             <div ref={messagesEndRef} />
+
+
                         </div>
+
                     </div>
 
 
@@ -270,7 +293,7 @@ export function Chat() {
                     </>}
 
                     <div className="facit">
-                        <h4>Follow this image!</h4>
+                        <h4>Recreate this image. Time is ticking!</h4>
                         <div className="imgContainer" id="facitGrid">
                             {renderFacit}
                         </div>

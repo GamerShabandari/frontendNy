@@ -158,6 +158,16 @@ button:hover{
   background-color: #f9cf00;
 }
 
+button:disabled,
+button[disabled]{
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.7rem;
+  background-color: #cccccc92;
+  color: #66666676;
+}
+
 input{
   border:2px solid #4484ce;
   border-radius: 10px;
@@ -165,4 +175,22 @@ input{
   font-size: 0.7rem;
   margin: 5px;
   color: #16213E;
+}
+
+.userIcon{
+  margin: 30px;
+}
+
+.leftPanel{
+  border: 2px solid yellow;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 30px;
+}
+
+.userlistContainer{
+  border: 2px solid purple;
 }
