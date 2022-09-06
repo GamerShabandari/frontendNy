@@ -57,3 +57,9 @@ code {
   display: flex;
   flex-direction: row;
 }
+
+.imgContainer{
+  border: 1px solid blue;
+  width:fit-content;
+  margin: auto;
+}

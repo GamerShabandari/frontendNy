@@ -57,7 +57,8 @@ export function Home() {
             <div className="room-list" key={i}>
                 <h3>{room.roomName}</h3>
                 <p> {room.users.length}/8</p>
-                <button onClick={() => { join(room.roomName) }}> Join</button>
+                {room.roomIsFull && <h4>Room is full</h4> }
+                {!room.roomIsFull && <button onClick={() => { join(room.roomName) }}> Join</button> }
             </div>
         )
     })
@@ -101,8 +102,6 @@ export function Home() {
             <div id="drawingPreviewGrid">
                 {renderDrawing}
             </div>
-
-
         </div>
 
     </>)

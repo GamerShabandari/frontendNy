@@ -128,7 +128,7 @@ export function Chat() {
 
         fieldsArray.find(f => {
             if (f.position === field.position) {
-                if (field.color != "white") {
+                if (field.color !== "white") {
                     field.color = "white";
                 }
                 else {
@@ -230,7 +230,7 @@ export function Chat() {
 
 
 
-                <div id="facitGrid">{renderFacit}</div>
+                <div className="imgContainer" id="facitGrid">{renderFacit}</div>
 
             </>}
 
