@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
 import { useNavigate } from "react-router-dom";
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
 const fieldsJSON = require("../assets/fields.json");
 
 
@@ -156,7 +157,7 @@ export function Chat() {
     }
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth",  block: "end", inline: "nearest" })
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     }
 
     let renderGrid = fieldsArray.map(field => {
@@ -191,8 +192,21 @@ export function Chat() {
                 key={i}
 
                 style={{ backgroundColor: "red", padding: "10px", color: "white" }}
-            >{user.nickname}</div>
-            {user.isDone && <div>Is Done...</div>}
+            >{user.nickname}
+
+                {user.isDone && <div>
+
+                    <Player
+                        autoplay
+                        keepLastFrame
+                        src="https://assets9.lottiefiles.com/private_files/lf30_z1sghrbu.json"
+                        style={{ height: '50px', width: '50px' }}
+                    >
+                        <Controls visible={false} />
+                    </Player>
+                </div>}
+            </div>
+
 
         </>
 
@@ -202,7 +216,9 @@ export function Chat() {
     let chatList = chatArray.map((message, i) => {
         return (
             <div key={i}>
-                {message.nickname}: {message.text}
+                {message.nickname === user && <div style={{ color: "#533483", textAlign: "right" }}>{message.nickname}: {message.text}</div> }
+                
+                {message.nickname !== user && <div style={{ color: "#E94560", textAlign: "left" }}>{message.nickname}: {message.text}</div> }
             </div>
         )
     })
@@ -223,7 +239,6 @@ export function Chat() {
                 <button onClick={leaveRoom}>Leave Room</button>
                 <br />
                 <div>{renderColorpicker}</div>
-
                 <div>{renderUsersInRoom}</div>
 
                 <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />

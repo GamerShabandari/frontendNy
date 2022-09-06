@@ -7,6 +7,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #16213E;
+  color: #E94560;
 }
 
 #root{
@@ -71,4 +73,23 @@ width:70%;
 height:200px;
 overflow: scroll;
 padding: 20px;
+}
+
+button{
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.7rem;
+  background-color: #533483;
+  color: #16213E;
+  margin: 5px;
+}
+
+input{
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.7rem;
+  margin: 5px;
+  color: #16213E;
 }

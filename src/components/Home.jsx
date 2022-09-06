@@ -49,13 +49,13 @@ export function Home() {
 
             for (let i = 0; i < room.users.length; i++) {
                 const user = room.users[i];
-                
+
                 if (user.nickname === username) {
                     setUserTakenError(true)
                     return
                 }
             }
-            
+
         }
         setUserTakenError(false)
         let user = {
@@ -78,8 +78,8 @@ export function Home() {
             <div className="room-list" key={i}>
                 <h3>{room.roomName}</h3>
                 <p> {room.users.length}/8</p>
-                {room.roomIsFull && <h4>Room is full</h4> }
-                {!room.roomIsFull && <button onClick={() => { join(room.roomName) }}>Join</button> }
+                {room.roomIsFull && <h4>Room is full</h4>}
+                {!room.roomIsFull && <button onClick={() => { join(room.roomName) }}>Join</button>}
             </div>
         )
     })
@@ -106,26 +106,34 @@ export function Home() {
     });
 
     return (<>
-        <h1>Welcome {username}</h1>
-        <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
-        <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
-        <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
-        {showError && <div>You must first chose a nickname to join a room</div> }
-        {userTakenError && <div>Nickname allready taken in this room, pick another nickname</div> }
-        
+        <header>
+            <h1>Welcome {username}</h1>
+        </header>
 
-        <br />
-        <br />
-        <div>{availableRooms.length} active rooms</div>
-        <br />
-        <div>Rooms to join: {roomsHTML}</div>
-        <div>Drawings: {drawingsHTML}</div>
+        <aside>
+            <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
+            <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
+            <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
+            {showError && <div>You must first chose a nickname to join a room</div>}
+            {userTakenError && <div>Nickname allready taken in this room, pick another nickname</div>}
+        </aside>
 
-        <div>
-            <div id="drawingPreviewGrid">
-                {renderDrawing}
+
+        <main>
+            <div>{availableRooms.length} active rooms</div>
+
+            <div>Rooms to join: {roomsHTML}</div>
+            <div>Drawings: {drawingsHTML}</div>
+
+            <div>
+                <div id="drawingPreviewGrid">
+                    {renderDrawing}
+                </div>
             </div>
-        </div>
+
+        </main>
+
+
 
     </>)
 
