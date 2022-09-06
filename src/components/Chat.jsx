@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom"
 import { socket } from "./Home";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,12 @@ export function Chat() {
     const [saveDone, setDaveDone] = useState(false);
     const [roomIsFull, setRoomIsFull] = useState(false);
 
+    const messagesEndRef = useRef(null)
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [chatArray]);
+
 
     useEffect(() => {
         socket.connect();
@@ -39,7 +45,7 @@ export function Chat() {
         socket.on("drawingSaved", function () {
             setDaveDone(true);
         });
-        
+
         socket.on("chatting", function (message) {
 
             let updatedChatArray = chatArray
@@ -84,17 +90,12 @@ export function Chat() {
             console.log(usersInRoom);
         });
 
-         socket.on("usersUpdate", function (usersUpdatedList) {
-        console.log("fdfsdfs");
-        setUsersInRoom([...usersUpdatedList]);
-    });
+        socket.on("usersUpdate", function (usersUpdatedList) {
+            console.log("fdfsdfs");
+            setUsersInRoom([...usersUpdatedList]);
+        });
 
     }, []);
-
-    // socket.on("usersUpdate", function () {
-    //     console.log("fdfsdfs");
-    //     //setUsersInRoom([...usersList]);
-    // });
 
     socket.on("drawing", function (pixelToUpdate) {
 
@@ -132,8 +133,8 @@ export function Chat() {
         socket.emit("saveThisDrawing", fieldsArray, room, result, timeH, timeM, timeS);
     }
 
-    function leaveRoom(){
-      //  console.log(user + " vill lämna rum: " + room);
+    function leaveRoom() {
+        //  console.log(user + " vill lämna rum: " + room);
         navigate(`/${user}`);
         socket.disconnect();
     }
@@ -152,6 +153,11 @@ export function Chat() {
                 socket.emit("draw", field, room)
             }
         })
+    }
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth",  block: "end", inline: "nearest" })
+        //this.messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
     let renderGrid = fieldsArray.map(field => {
@@ -196,9 +202,9 @@ export function Chat() {
 
     let chatList = chatArray.map((message, i) => {
         return (
-            <li key={i}>
+            <div key={i}>
                 {message.nickname}: {message.text}
-            </li>
+            </div>
         )
     })
 
@@ -224,9 +230,10 @@ export function Chat() {
                 <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
                 <button onClick={sendMessage}>send</button>
 
-                <ul>
+                <div id="chatContainer">
                     {chatList}
-                </ul>
+                    <div ref={messagesEndRef} />
+                </div>
 
                 {!gamerOver && <div>
                     <button onClick={timeToCheckFacit}>Im Done!</button>

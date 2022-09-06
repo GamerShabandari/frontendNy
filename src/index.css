@@ -63,3 +63,12 @@ code {
   width:fit-content;
   margin: auto;
 }
+
+#chatContainer{
+border: 2px solid purple;
+margin: auto;
+width:70%;
+height:200px;
+overflow: scroll;
+padding: 20px;
+}
