@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client"
-export const socket = io('http://localhost:3001', { "autoConnect": false })
+export const socket = io('https://grid-painter-back.herokuapp.com/', { "autoConnect": false })
 
 export function Home() {
 
