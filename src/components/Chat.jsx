@@ -84,6 +84,11 @@ export function Chat() {
             console.log(usersInRoom);
         });
 
+         socket.on("usersUpdate", function (usersUpdatedList) {
+        console.log("fdfsdfs");
+        setUsersInRoom([...usersUpdatedList]);
+    });
+
     }, []);
 
     // socket.on("usersUpdate", function () {
@@ -128,7 +133,7 @@ export function Chat() {
     }
 
     function leaveRoom(){
-        console.log(user + " vill lämna rum: " + room);
+      //  console.log(user + " vill lämna rum: " + room);
         navigate(`/${user}`);
         socket.disconnect();
     }
