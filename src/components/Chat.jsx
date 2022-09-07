@@ -295,7 +295,7 @@ export function Chat() {
                         <Controls visible={false} />
                     </Player>
 
-                    <div><h1>GAME OVER! Your result was: {result}% - time taken: {timeH} hours {timeM} minutes {timeS} seconds</h1></div>
+                    <div className="GameOverContainer"><h1 className="GameOver">GAME OVER!</h1> <span className="results"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
                     {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
                 </>}
 
