@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import { io } from "socket.io-client"
 export const socket = io('https://grid-painter-back.herokuapp.com/', { "autoConnect": false })
 
@@ -75,22 +77,31 @@ export function Home() {
     let roomsHTML = availableRooms.map((room, i) => {
         console.log(room)
         return (
-            <div className="room-list" key={i}>
+            <motion.div className="room-list" key={i}
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.5, delay: i * 0.4 }}
+            >
                 <h4>{room.roomName}</h4>
                 <p> {room.users.length}/8</p>
                 {room.roomIsFull && <h4>Room is full</h4>}
                 {!room.roomIsFull && <button onClick={() => { join(room.roomName) }}>Join</button>}
-            </div>
+            </motion.div>
         )
     })
 
     let drawingsHTML = availableDrawings.map((drawing, i) => {
         return (
-            <div className="room-list" key={i}>
+            <motion.div className="room-list" key={i}
+
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.5, delay: i * 0.4 }}
+            >
                 <h4>Room name: {drawing.name} - </h4>
                 <p>time taken: {drawing.timeTaken} - result: {drawing.result}%</p>
                 <button onClick={() => { showDrawing(i) }}>View Image</button>
-            </div>
+            </motion.div>
         )
     })
 
@@ -99,18 +110,26 @@ export function Home() {
             <div
                 key={pixel.position}
                 id={pixel.position}
-                className="pixelFacit"
+                className="pixelFacit animate__animated animate__bounce"
                 style={{ backgroundColor: pixel.color }}
             ></div>
         );
     });
 
     return (<>
-        <header>
-            <h1>Welcome {username}</h1>
+        <header className="header">
+            <h1 className="animate__animated animate__bounce">Welcome {username}</h1>
+            <Player
+                            autoplay
+                            loop
+                            src="https://assets6.lottiefiles.com/packages/lf20_1pxqjqps.json"
+                            style={{ height: '200px', width: '200px' }}
+                        >
+                            <Controls visible={false} />
+                        </Player>
         </header>
 
-        <aside>
+        <aside className="animate__animated animate__fadeInDown">
             <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
             <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
             <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
@@ -120,16 +139,24 @@ export function Home() {
 
 
         <div>
-            <h2>{availableRooms.length} active rooms</h2>
 
-            <h3>Rooms to join:</h3> {roomsHTML}
-            <h3>Drawings:</h3> {drawingsHTML}
+            <div>
+
+                <h3 className="title animate__animated animate__fadeInDown">Rooms to join:</h3> {roomsHTML}
+
+            </div>
+
+            <div>
+                <h3 className="title animate__animated animate__fadeInDown">Drawings:</h3> {drawingsHTML}
 
 
                 <div id="drawingPreviewGrid">
                     {renderDrawing}
                 </div>
-            
+
+            </div>
+
+
 
         </div>
 

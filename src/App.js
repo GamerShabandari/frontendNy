@@ -3,6 +3,7 @@ import './App.css';
 import { Home } from './components/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Chat } from './components/Chat';
+import 'animate.css';
 
 function App() {
   return (
