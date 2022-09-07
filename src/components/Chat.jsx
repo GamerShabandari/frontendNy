@@ -265,7 +265,7 @@ export function Chat() {
                     <h2 className="animate__animated animate__fadeInDown">Welcome {user} to room {room}</h2>
                     <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={leaveRoom}>Leave Room</button>
                 </header>
-                {/* <div className="colorsArray">{renderColorpicker} */}
+              
 
 
                 {!gamerOver && <div>
@@ -284,12 +284,13 @@ export function Chat() {
                     >
                         <Controls visible={false} />
                     </Player>
-                    <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    <div className="GameOverContainer"><h1 className="GameOver">GAME OVER!</h1> <span className="results"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
                     {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
                 </>}
-                {/* </div> */}
+              
 
-                <main>
+
+                {!gamerOver && <main>
                     <div>
                         <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
                         <ul>{renderUsersInRoom}</ul>
@@ -317,10 +318,8 @@ export function Chat() {
 
                     </div>
 
-
-                    {!gamerOver && <>
-                        <div id="grid">{renderGrid}</div>
-                    </>}
+                    <div id="grid">{renderGrid}</div>
+                   
 
                     <div className="facit">
                         <h4>Recreate this image. Time is ticking!</h4>
@@ -328,7 +327,8 @@ export function Chat() {
                             {renderFacit}
                         </div>
                     </div>
-                </main>
+                </main>}
+
             </>}
 
         </>
