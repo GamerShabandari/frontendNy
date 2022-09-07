@@ -130,8 +130,8 @@ export function Home() {
         </header>
 
         <aside className="animate__animated animate__fadeInDown">
-            <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value) }} />
-            <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value) }} />
+            <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)) }} />
+            <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)) }} />
             <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
             {showError && <div>You must first chose a nickname to join a room</div>}
             {userTakenError && <div>Nickname allready taken in this room, pick another nickname</div>}
