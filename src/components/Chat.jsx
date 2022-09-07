@@ -212,7 +212,7 @@ export function Chat() {
                         autoplay
                         keepLastFrame
                         src="https://assets2.lottiefiles.com/packages/lf20_fgp8rk11.json"
-                        style={{ height: '30px', width: '30px' }}
+                        style={{ height: '20px', width: '20px' }}
                     >
                         <Controls visible={false} />
                     </Player>
@@ -306,12 +306,8 @@ export function Chat() {
                     {!gamerOver &&
                         <>
 
-                            <div className="usersContainer">
-                                <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
-                                <ul>{renderUsersInRoom}</ul>
-
-                                <h4 className="title animate__animated animate__flipInY">Chat </h4>
-
+                            <div className="usersContainer  animate__animated animate__flipInY">
+                    
                                 <Player
                                     autoplay
                                     loop
@@ -321,8 +317,6 @@ export function Chat() {
                                     <Controls visible={false} />
                                 </Player>
 
-
-
                                 <div id="chatContainer">
                                     {chatList}
                                     <div className="chatMessage">
@@ -330,42 +324,34 @@ export function Chat() {
                                         <button disabled={message.length < 1} onClick={sendMessage}>send</button>
                                     </div>
                                     <div ref={messagesEndRef} />
-
-
                                 </div>
 
-
-
+                                <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
+                                <ul>{renderUsersInRoom}</ul>
+                                
                             </div>
                         </>
                     }
 
-
-
                     {!gamerOver &&
                         <>
-
                             <div id="grid">{renderGrid}</div>
 
                             <div className="facit">
+                                <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
+                                    {renderFacit}
+                                </div>
                                 <h4 className="title  animate__animated animate__flipInY">Recreate this image. Time is ticking!
                                     <Player
                                         autoplay
-                                        loop
-                                        src="https://assets9.lottiefiles.com/private_files/lf30_kgibscyo.json"
-                                        style={{ height: '70px', width: '70px' }}
+                                        keepLastFrame
+                                        src="https://assets8.lottiefiles.com/packages/lf20_pge4fjym.json"
+                                        style={{ height: '60px', width: '60px' }}
                                     >
                                         <Controls visible={false} />
                                     </Player>
 
                                 </h4>
-
-
-
-
-                                <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
-                                    {renderFacit}
-                                </div>
                             </div>
                         </>
                     }
