@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { socket } from "./Home";
 import { useNavigate } from "react-router-dom";
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
+import { motion } from "framer-motion";
 const fieldsJSON = require("../assets/fields.json");
 
 
@@ -162,12 +163,18 @@ export function Chat() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
-    let renderGrid = fieldsArray.map(field => {
-        return (<div key={field.position} id={field.position} className="pixel"
+    let renderGrid = fieldsArray.map((field, i) => {
+        return (<motion.div key={field.position} id={field.position} className="pixel"
             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = myColor }}
             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = field.color }}
-            onClick={(e) => paint(field, e)} style={{ backgroundColor: field.color }}>
-        </div>)
+            onClick={(e) => paint(field, e)} style={{ backgroundColor: field.color }}
+
+            initial={{ opacity: 0, translateY: -20 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ ease: "easeInOut", duration: 0.002, delay: i * 0.002 }}
+
+        >
+        </motion.div>)
     })
 
     let renderFacit = facit.map((pixel) => {
@@ -183,23 +190,34 @@ export function Chat() {
 
     let renderColorpicker = colorsArray.map((color, i) => {
         return (
-            <div className="colors" key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color }}
-            ></div>
+            <motion.div className="colors" key={i} onClick={() => { pickColor(color.color) }} style={{ backgroundColor: color.color }}
+
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.2, delay: i * 0.2 }}
+            ></motion.div>
         );
     });
 
     let renderUsersInRoom = usersInRoom.map((user, i) => {
         return (<>
-            <li key={i}>
+            <motion.li key={i}
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.5, delay: i * 0.4 }}
 
-                <Player className="userIcon"
-                    autoplay
-                    keepLastFrame
-                    src="https://assets2.lottiefiles.com/packages/lf20_fgp8rk11.json"
-                    style={{ height: '20px', width: '20px' }}
-                >
-                    <Controls visible={false} />
-                </Player>
+            >
+                <div>
+                    <Player className="userIcon"
+                        autoplay
+                        keepLastFrame
+                        src="https://assets2.lottiefiles.com/packages/lf20_fgp8rk11.json"
+                        style={{ height: '20px', width: '20px' }}
+                    >
+                        <Controls visible={false} />
+                    </Player>
+                </div>
+
 
                 {": " + user.nickname}
                 {user.isDone && <div>
@@ -213,7 +231,7 @@ export function Chat() {
                         <Controls visible={false} />
                     </Player>
                 </div>}
-            </li>
+            </motion.li>
 
 
         </>
@@ -244,35 +262,47 @@ export function Chat() {
             {!roomIsFull && <>
 
                 <header>
-                    <h2>Welcome {user} to room {room}</h2>
-                    <button onClick={leaveRoom}>Leave Room</button>
+                    <h2 className="animate__animated animate__fadeInDown">Welcome {user} to room {room}</h2>
+                    <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={leaveRoom}>Leave Room</button>
                 </header>
-                <div className="colorsArray">{renderColorpicker}
+                {/* <div className="colorsArray">{renderColorpicker} */}
 
 
-                    {!gamerOver && <div>
-                        <button onClick={timeToCheckFacit}>Im Done!</button>
-                    </div>}
+                {!gamerOver && <div>
+                    <div className="colorsArray">{renderColorpicker}</div>
+                    <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={timeToCheckFacit}>Im Done!</button>
+                </div>}
 
 
-                    {gamerOver && <>
-                        <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
-                        {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
-                    </>}
-                </div>
+                {gamerOver && <>
+
+                    <Player
+                        autoplay
+                        loop
+                        src="https://assets4.lottiefiles.com/packages/lf20_clmd2mj6.json"
+                        style={{ height: '200px', width: '200px' }}
+                    >
+                        <Controls visible={false} />
+                    </Player>
+                    <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
+                </>}
+                {/* </div> */}
 
                 <main>
                     <div>
-                        <h4>Users in room:</h4>
+                        <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
                         <ul>{renderUsersInRoom}</ul>
-                        <h4>Chat <Player
+                        <h4 className="title animate__animated animate__flipInY">Chat </h4>
+
+                        <Player
                             autoplay
                             loop
                             src="https://assets5.lottiefiles.com/private_files/lf30_z588h1j0.json"
                             style={{ height: '50px', width: '50px' }}
                         >
                             <Controls visible={false} />
-                        </Player></h4>
+                        </Player>
 
                         <div id="chatContainer">
                             {chatList}
@@ -294,7 +324,7 @@ export function Chat() {
 
                     <div className="facit">
                         <h4>Recreate this image. Time is ticking!</h4>
-                        <div className="imgContainer" id="facitGrid">
+                        <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
                             {renderFacit}
                         </div>
                     </div>
