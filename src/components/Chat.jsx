@@ -219,7 +219,7 @@ export function Chat() {
                 </div>
 
 
-                { <span className="userNameInList">{user.nickname}</span> }
+                {<span className="userNameInList">{user.nickname}</span>}
                 {user.isDone && <div>
 
                     <Player
@@ -279,7 +279,7 @@ export function Chat() {
                     <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={leaveRoom}>Leave Room</button>
                 </header>
 
-                {!gamerOver && <div>
+                {!gamerOver && <div className="colorsContainer">
                     <div className="colorsArray">{renderColorpicker}</div>
                     <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={timeToCheckFacit}>Im Done!</button>
                 </div>}
@@ -297,7 +297,7 @@ export function Chat() {
                     </Player>
 
                     <div className="GameOverContainer"><h1 className="GameOver  animate__animated animate__heartBeat">GAME OVER!</h1> <span className="results animate__animated  animate__heartBeat"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
-                    {!saveDone && <button  className="animate__animated animate__bounceIn  animate__delay-1s" onClick={saveDrawing}>Save this drawing</button>}
+                    {!saveDone && <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={saveDrawing}>Save this drawing</button>}
                 </>}
 
                 <main>
@@ -306,7 +306,7 @@ export function Chat() {
                     {!gamerOver &&
                         <>
 
-                            <div>
+                            <div className="usersContainer">
                                 <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
                                 <ul>{renderUsersInRoom}</ul>
 
@@ -322,6 +322,7 @@ export function Chat() {
                                 </Player>
 
 
+
                                 <div id="chatContainer">
                                     {chatList}
                                     <div className="chatMessage">
@@ -332,6 +333,7 @@ export function Chat() {
 
 
                                 </div>
+
 
 
                             </div>
@@ -347,19 +349,19 @@ export function Chat() {
 
                             <div className="facit">
                                 <h4 className="title  animate__animated animate__flipInY">Recreate this image. Time is ticking!
-                                <Player
-                                    autoplay
-                                    loop
-                                    src="https://assets9.lottiefiles.com/private_files/lf30_kgibscyo.json"
-                                    style={{ height: '70px', width: '70px' }}
-                                >
-                                    <Controls visible={false} />
-                                </Player>
-                                
+                                    <Player
+                                        autoplay
+                                        loop
+                                        src="https://assets9.lottiefiles.com/private_files/lf30_kgibscyo.json"
+                                        style={{ height: '70px', width: '70px' }}
+                                    >
+                                        <Controls visible={false} />
+                                    </Player>
+
                                 </h4>
 
 
-                                
+
 
                                 <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
                                     {renderFacit}
