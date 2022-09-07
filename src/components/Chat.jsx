@@ -249,6 +249,17 @@ export function Chat() {
         )
     })
 
+    let renderDrawing = fieldsArray.map((pixel) => {
+        return (
+            <div
+                key={pixel.position}
+                id={pixel.position}
+                className="pixelFacit animate__animated animate__bounce"
+                style={{ backgroundColor: pixel.color }}
+            ></div>
+        );
+    });
+
 
 
     return (
@@ -284,15 +295,16 @@ export function Chat() {
                     >
                         <Controls visible={false} />
                     </Player>
-                    <div><h1>GAME OVER! Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</h1></div>
+                    <div><h1>GAME OVER! Your result was: {result}% - time taken: {timeH} hours {timeM} minutes {timeS} seconds</h1></div>
                     {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
                 </>}
-                {/* </div> */}
 
                 <main>
+                {!gamerOver &&
                     <div>
                         <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
                         <ul>{renderUsersInRoom}</ul>
+            
                         <h4 className="title animate__animated animate__flipInY">Chat </h4>
 
                         <Player
@@ -304,6 +316,7 @@ export function Chat() {
                             <Controls visible={false} />
                         </Player>
 
+                        
                         <div id="chatContainer">
                             {chatList}
                             <div className="chatMessage">
@@ -314,13 +327,16 @@ export function Chat() {
 
 
                         </div>
-
+     
+                    
                     </div>
+                }
 
 
-                    {!gamerOver && <>
+                    {!gamerOver && 
+                    <>
                         <div id="grid">{renderGrid}</div>
-                    </>}
+                    
 
                     <div className="facit">
                         <h4>Recreate this image. Time is ticking!</h4>
@@ -328,6 +344,11 @@ export function Chat() {
                             {renderFacit}
                         </div>
                     </div>
+                    </>
+                    }
+                    {gamerOver &&
+                        <div className="resultGrid">{renderDrawing}</div>
+                    }
                 </main>
             </>}
 

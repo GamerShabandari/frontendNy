@@ -68,6 +68,15 @@ header h2{
   margin-top: 20px;
 }
 
+.resultGrid{
+  margin: auto;
+  display:grid;
+  grid-template-columns: repeat(25, 12px);
+  grid-template-rows: repeat(25, 12px);
+  justify-content: center;
+  margin-top: 20px;
+}
+
 #drawingPreviewGrid{
   display:grid;
   grid-template-columns: repeat(25, 10px);
