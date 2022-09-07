@@ -47,7 +47,16 @@ header h2{
   width: 30px;
   height: 30px;
   border-radius: 10px;
+  transition: outline ease-in 0.2s;
+  outline: 1px solid darkgrey;
+  
 }
+
+.colors:hover{
+  outline: 1px solid black;
+  
+}
+
 #grid{
   flex-grow: 4;
   display:grid;
@@ -213,9 +222,10 @@ input{
 }
 
 .title{
-  font-weight: 300;
+  font-weight: 500;
   color: #4484ce;
   letter-spacing: 2px;
+  font-size: 1.3rem;
 }
 
 .results{
@@ -235,5 +245,13 @@ input{
   align-items: center;
   gap: 20px;
   padding: 30px;
+}
+
+.userNameInList{
+  padding: 10px;
+  letter-spacing: 2px;
+  color: #4484ce;
+  font-weight: 300;
+  font-size: 0.9rem;
 }
   

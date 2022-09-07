@@ -105,14 +105,18 @@ export function Home() {
         )
     })
 
-    let renderDrawing = chosenDrawing.map((pixel) => {
+    let renderDrawing = chosenDrawing.map((pixel, i) => {
         return (
-            <div
+            <motion.div
                 key={pixel.position}
                 id={pixel.position}
-                className="pixelFacit animate__animated animate__bounce"
                 style={{ backgroundColor: pixel.color }}
-            ></div>
+
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.001, delay: i * 0.001 }}
+                
+            ></motion.div>
         );
     });
 
@@ -120,13 +124,13 @@ export function Home() {
         <header className="header">
             <h1 className="animate__animated animate__bounce">Welcome {username}</h1>
             <Player
-                            autoplay
-                            loop
-                            src="https://assets6.lottiefiles.com/packages/lf20_1pxqjqps.json"
-                            style={{ height: '200px', width: '200px' }}
-                        >
-                            <Controls visible={false} />
-                        </Player>
+                autoplay
+                loop
+                src="https://assets6.lottiefiles.com/packages/lf20_1pxqjqps.json"
+                style={{ height: '200px', width: '200px' }}
+            >
+                <Controls visible={false} />
+            </Player>
         </header>
 
         <aside className="animate__animated animate__fadeInDown">

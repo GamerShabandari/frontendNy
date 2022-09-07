@@ -212,14 +212,14 @@ export function Chat() {
                         autoplay
                         keepLastFrame
                         src="https://assets2.lottiefiles.com/packages/lf20_fgp8rk11.json"
-                        style={{ height: '20px', width: '20px' }}
+                        style={{ height: '30px', width: '30px' }}
                     >
                         <Controls visible={false} />
                     </Player>
                 </div>
 
 
-                {": " + user.nickname}
+                { <span className="userNameInList">{user.nickname}</span> }
                 {user.isDone && <div>
 
                     <Player
@@ -249,14 +249,17 @@ export function Chat() {
         )
     })
 
-    let renderDrawing = fieldsArray.map((pixel) => {
+    let renderDrawing = fieldsArray.map((pixel, i) => {
         return (
-            <div
+            <motion.div
                 key={pixel.position}
                 id={pixel.position}
-                className="pixelFacit animate__animated animate__bounce"
                 style={{ backgroundColor: pixel.color }}
-            ></div>
+
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.001, delay: i * 0.001 }}
+            ></motion.div>
         );
     });
 
@@ -271,12 +274,10 @@ export function Chat() {
 
             {!roomIsFull && <>
 
-                <header>
-                    <h2 className="animate__animated animate__fadeInDown">Welcome {user} to room {room}</h2>
+                <header className="header">
+                    {!gamerOver && <h2 className="animate__animated animate__fadeInDown">Welcome {user} to room {room}</h2>}
                     <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={leaveRoom}>Leave Room</button>
                 </header>
-
-
 
                 {!gamerOver && <div>
                     <div className="colorsArray">{renderColorpicker}</div>
@@ -295,8 +296,8 @@ export function Chat() {
                         <Controls visible={false} />
                     </Player>
 
-                    <div className="GameOverContainer"><h1 className="GameOver">GAME OVER!</h1> <span className="results"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
-                    {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
+                    <div className="GameOverContainer"><h1 className="GameOver  animate__animated animate__heartBeat">GAME OVER!</h1> <span className="results animate__animated  animate__heartBeat"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
+                    {!saveDone && <button  className="animate__animated animate__bounceIn  animate__delay-1s" onClick={saveDrawing}>Save this drawing</button>}
                 </>}
 
                 <main>
@@ -345,7 +346,21 @@ export function Chat() {
                             <div id="grid">{renderGrid}</div>
 
                             <div className="facit">
-                                <h4>Recreate this image. Time is ticking!</h4>
+                                <h4 className="title  animate__animated animate__flipInY">Recreate this image. Time is ticking!
+                                <Player
+                                    autoplay
+                                    loop
+                                    src="https://assets9.lottiefiles.com/private_files/lf30_kgibscyo.json"
+                                    style={{ height: '70px', width: '70px' }}
+                                >
+                                    <Controls visible={false} />
+                                </Player>
+                                
+                                </h4>
+
+
+                                
+
                                 <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
                                     {renderFacit}
                                 </div>
