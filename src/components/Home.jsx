@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import { io } from "socket.io-client"
-export const socket = io('https://grid-painter-back.herokuapp.com:3001', { "autoConnect": false, transports : ['websocket'] })
+export const socket = io('https://grid-painter-back.herokuapp.com', { "autoConnect": false, transports : ['websocket'] })
 
 export function Home() {
 
