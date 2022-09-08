@@ -49,13 +49,7 @@ export function Chat() {
         });
 
         socket.on("chatting", function (message) {
-
-            let updatedChatArray = chatArray
-            updatedChatArray = chatArray
-            updatedChatArray.push(message)
-            setChatArray([...updatedChatArray])
-            console.log("chatarray", chatArray);
-            updatedChatArray = []
+            setChatArray([...chatArray, message])
             return
         });
 
@@ -97,7 +91,7 @@ export function Chat() {
             setUsersInRoom([...usersUpdatedList]);
         });
 
-    }, []);
+    }, [chatArray, room, user, usersInRoom]);
 
     socket.on("drawing", function (pixelToUpdate) {
 
