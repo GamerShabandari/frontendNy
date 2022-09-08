@@ -49,13 +49,7 @@ export function Chat() {
         });
 
         socket.on("chatting", function (message) {
-
-            let updatedChatArray = chatArray
-            updatedChatArray = chatArray
-            updatedChatArray.push(message)
-            setChatArray([...updatedChatArray])
-            console.log("chatarray", chatArray);
-            updatedChatArray = []
+            setChatArray([...chatArray, message])
             return
         });
 
@@ -97,7 +91,7 @@ export function Chat() {
             setUsersInRoom([...usersUpdatedList]);
         });
 
-    }, []);
+    }, [chatArray, room, user, usersInRoom]);
 
     socket.on("drawing", function (pixelToUpdate) {
 
@@ -219,7 +213,7 @@ export function Chat() {
                 </div>
 
 
-                {": " + user.nickname}
+                {<span className="userNameInList">{user.nickname}</span>}
                 {user.isDone && <div>
 
                     <Player
@@ -249,11 +243,24 @@ export function Chat() {
         )
     })
 
+    let renderDrawing = fieldsArray.map((pixel, i) => {
+        return (
+            <motion.div
+                key={pixel.position}
+                id={pixel.position}
+                style={{ backgroundColor: pixel.color }}
+
+                initial={{ opacity: 0, translateY: -20 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ ease: "easeInOut", duration: 0.001, delay: i * 0.001 }}
+            ></motion.div>
+        );
+    });
+
 
 
     return (
         <>
-
             {roomIsFull && <div>
                 <h3>Sorry room is full or finished, try another room or create a new one</h3>
                 <button onClick={() => { navigate(`/`) }}>Back Home</button>
@@ -261,14 +268,12 @@ export function Chat() {
 
             {!roomIsFull && <>
 
-                <header>
-                    <h2 className="animate__animated animate__fadeInDown">Welcome {user} to room {room}</h2>
+                <header className="header">
+                    {!gamerOver && <h2 className="animate__animated animate__fadeInDown">Welcome {user} to room {room}</h2>}
                     <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={leaveRoom}>Leave Room</button>
                 </header>
-              
 
-
-                {!gamerOver && <div>
+                {!gamerOver && <div className="colorsContainer">
                     <div className="colorsArray">{renderColorpicker}</div>
                     <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={timeToCheckFacit}>Im Done!</button>
                 </div>}
@@ -284,53 +289,74 @@ export function Chat() {
                     >
                         <Controls visible={false} />
                     </Player>
-                    <div className="GameOverContainer"><h1 className="GameOver">GAME OVER!</h1> <span className="results"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
-                    {!saveDone && <button onClick={saveDrawing}>Save this drawing</button>}
+
+                    <div className="GameOverContainer"><h1 className="GameOver  animate__animated animate__heartBeat">GAME OVER!</h1> <span className="results animate__animated  animate__heartBeat"> Your result was: {result}% - time taken: h:{timeH} m:{timeM} s:{timeS}</span></div>
+                    {!saveDone && <button className="animate__animated animate__bounceIn  animate__delay-1s" onClick={saveDrawing}>Save this drawing</button>}
                 </>}
-              
+
+                <main>
 
 
-                {!gamerOver && <main>
-                    <div>
-                        <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
-                        <ul>{renderUsersInRoom}</ul>
-                        <h4 className="title animate__animated animate__flipInY">Chat </h4>
+                    {!gamerOver &&
+                        <>
 
-                        <Player
-                            autoplay
-                            loop
-                            src="https://assets5.lottiefiles.com/private_files/lf30_z588h1j0.json"
-                            style={{ height: '50px', width: '50px' }}
-                        >
-                            <Controls visible={false} />
-                        </Player>
+                            <div className="usersContainer  animate__animated animate__flipInY">
+                    
+                                <Player
+                                    autoplay
+                                    loop
+                                    src="https://assets5.lottiefiles.com/private_files/lf30_z588h1j0.json"
+                                    style={{ height: '50px', width: '50px' }}
+                                >
+                                    <Controls visible={false} />
+                                </Player>
 
-                        <div id="chatContainer">
-                            {chatList}
-                            <div className="chatMessage">
-                                <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
-                                <button disabled={message.length < 1} onClick={sendMessage}>send</button>
+                                <div id="chatContainer">
+                                    {chatList}
+                                    <div className="chatMessage">
+                                        <input type="text" placeholder="chat" onChange={(e) => { setMessage(e.target.value) }} value={message} />
+                                        <button disabled={message.length < 1} onClick={sendMessage}>send</button>
+                                    </div>
+                                    <div ref={messagesEndRef} />
+                                </div>
+
+                                <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
+                                <ul>{renderUsersInRoom}</ul>
+                                
                             </div>
-                            <div ref={messagesEndRef} />
+                        </>
+                    }
 
+                    {!gamerOver &&
+                        <>
+                            <div id="grid">{renderGrid}</div>
 
-                        </div>
+                            <div className="facit">
+                                <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
+                                    {renderFacit}
+                                </div>
+                                <h4 className="title  animate__animated animate__flipInY">Recreate this image. Time is ticking!
+                                    <Player
+                                        autoplay
+                                        keepLastFrame
+                                        src="https://assets8.lottiefiles.com/packages/lf20_pge4fjym.json"
+                                        style={{ height: '60px', width: '60px' }}
+                                    >
+                                        <Controls visible={false} />
+                                    </Player>
 
-                    </div>
+                                </h4>
+                            </div>
+                        </>
+                    }
+                    {
+                        gamerOver &&
+                        <div className="resultGrid">{renderDrawing}</div>
+                    }
 
-                    <div id="grid">{renderGrid}</div>
-                   
-
-                    <div className="facit">
-                        <h4>Recreate this image. Time is ticking!</h4>
-                        <div className="imgContainer animate__animated animate__flipInY" id="facitGrid">
-                            {renderFacit}
-                        </div>
-                    </div>
-                </main>}
-
-            </>}
-
+                </main>
+            </>
+            }
         </>
     )
 }
