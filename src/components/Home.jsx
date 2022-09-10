@@ -16,6 +16,8 @@ export function Home() {
     const [chosenDrawing, setChosenDrawing] = useState([]);
     const [showError, setShowError] = useState(false);
     const [userTakenError, setUserTakenError] = useState(false);
+    const [toggleDrawingsList, setToggleDrawingsList] = useState(false);
+    const [toggleRoomsList, setToggleRoomsList] = useState(false);
 
     const navigate = useNavigate();
     let userFromParam = userParam
@@ -73,6 +75,14 @@ export function Home() {
         setChosenDrawing([...availableDrawings[index].imageField])
     }
 
+    function roomsToggle() {
+        setToggleRoomsList(!toggleRoomsList)
+    }
+
+    function drawingsToggle() {
+        setToggleDrawingsList(!toggleDrawingsList)
+    }
+
 
     let roomsHTML = availableRooms.map((room, i) => {
         console.log(room)
@@ -115,7 +125,7 @@ export function Home() {
                 initial={{ opacity: 0, translateY: -20 }}
                 animate={{ opacity: 1, translateY: 0 }}
                 transition={{ ease: "easeInOut", duration: 0.001, delay: i * 0.001 }}
-                
+
             ></motion.div>
         );
     });
@@ -146,13 +156,42 @@ export function Home() {
 
             <div>
 
-                <h3 className="title animate__animated animate__fadeInDown">Rooms to join:</h3> {roomsHTML}
+                <h3 className="title animate__animated animate__fadeInDown">({availableRooms.length})Rooms to join:</h3>
+                <div className="toggleBtn" onClick={roomsToggle}>
+                    <Player
+                        autoplay
+                        loop
+                        src="https://assets6.lottiefiles.com/packages/lf20_hnvzkcfr.json"
+                        style={{ height: '3rem', width: '3rem' }}
+                    >
+                        <Controls visible={false} />
+                    </Player>
+                </div>
+
+                {toggleRoomsList && availableRooms.length > 0 && <div className="listContainer">
+                    {roomsHTML}
+                </div>}
+
 
             </div>
 
             <div>
-                <h3 className="title animate__animated animate__fadeInDown">Drawings:</h3> {drawingsHTML}
+                <h3 className="title animate__animated animate__fadeInDown">({availableDrawings.length})Drawings:</h3>
 
+                <div className="toggleBtn" onClick={drawingsToggle}>
+                    <Player
+                        autoplay
+                        loop
+                        src="https://assets6.lottiefiles.com/packages/lf20_hnvzkcfr.json"
+                        style={{ height: '3rem', width: '3rem' }}
+                    >
+                        <Controls visible={false} />
+                    </Player>
+                </div>
+
+                {toggleDrawingsList && availableDrawings.length > 0 && <div className="listContainer">
+                    {drawingsHTML}
+                </div>}
 
                 <div id="drawingPreviewGrid">
                     {renderDrawing}
