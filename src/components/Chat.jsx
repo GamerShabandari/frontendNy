@@ -36,7 +36,7 @@ export function Chat() {
     useEffect(() => {
         socket.connect();
 
-        setFieldsArray([...fieldsJSON])
+        // setFieldsArray([...fieldsJSON])
 
         socket.emit("getMyRoom", room);
 
@@ -58,6 +58,7 @@ export function Chat() {
             setFacit([...roomToMatch.facit])
             setColorsArray([...roomToMatch.colors])
             setUsersInRoom([...roomToMatch.users])
+            setFieldsArray([...roomToMatch.fields])
         });
 
         socket.on("history", function (history) {
