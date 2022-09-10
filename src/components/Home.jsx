@@ -92,8 +92,8 @@ export function Home() {
                 animate={{ opacity: 1, translateY: 0 }}
                 transition={{ ease: "easeInOut", duration: 0.5, delay: i * 0.4 }}
             >
-                <h4>{room.roomName}</h4>
-                <p> {room.users.length}/8</p>
+                <h4 className="listName">{room.roomName}</h4>
+                <p className="listName2"> {room.users.length}/8</p>
                 {room.roomIsFull && <h4>Room is full</h4>}
                 {!room.roomIsFull && <button onClick={() => { join(room.roomName) }}>Join</button>}
             </motion.div>
@@ -108,8 +108,8 @@ export function Home() {
                 animate={{ opacity: 1, translateY: 0 }}
                 transition={{ ease: "easeInOut", duration: 0.5, delay: i * 0.4 }}
             >
-                <h4>Room name: {drawing.name}</h4>
-                <p>time taken: {drawing.timeTaken} - result: {drawing.result}%</p>
+                <h4 className="listName">({drawing.name})</h4>
+                <p className="listName2">time taken: {drawing.timeTaken} - result: {drawing.result}%</p>
                 <button onClick={() => { showDrawing(i) }}>View Image</button>
             </motion.div>
         )
@@ -144,9 +144,11 @@ export function Home() {
         </header>
 
         <aside className="animate__animated animate__fadeInDown">
-            <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)) }} />
-            <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)) }} />
-            <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
+            <div className="inputContainer">
+                <input type="text" placeholder="nickname" onChange={(e) => { setUsername(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)) }} />
+                <input type="text" placeholder="room" onChange={(e) => { setRoomToJoin(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)) }} />
+                <button disabled={username.length < 1 || roomToJoin.length < 1} onClick={() => { join(roomToJoin) }}>create room</button>
+            </div>
             {showError && <div>You must first chose a nickname to join a room</div>}
             {userTakenError && <div>Nickname allready taken in this room, pick another nickname</div>}
         </aside>
