@@ -60,6 +60,7 @@ header h2 {
   border: 1px solid darkgrey;
   transition: 0.3s;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 
 }
 
@@ -82,6 +83,7 @@ header h2 {
   border: 0.5px solid rgb(43, 43, 43);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .pixel:hover {
@@ -114,12 +116,15 @@ header h2 {
 }
 
 .room-list {
-
-  align-items: center;
-  justify-content: center;
-  gap: 2%;
+  gap: 10px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: row;
+  width: 90%;
+  height: 100px;
+  margin: 5px;
+  overflow: hidden;
 }
 
 .imgContainer {
@@ -205,9 +210,12 @@ button {
   color: white;
   text-transform: uppercase;
   margin: 5px;
-  width: fit-content;
+  width: 100px;
+  height: 40px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
+  cursor: pointer;
+  overflow: hidden;
 
 }
 
@@ -321,4 +329,20 @@ input {
   justify-content: center;
   align-items: center;
 
+}
+
+.toggleBtn{
+  cursor: pointer;
+  width: fit-content;
+  margin: auto;
+}
+
+.listContainer{
+
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
