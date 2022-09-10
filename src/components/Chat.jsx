@@ -221,7 +221,7 @@ export function Chat() {
                         autoplay
                         keepLastFrame
                         src="https://assets9.lottiefiles.com/private_files/lf30_z1sghrbu.json"
-                        style={{ height: '50px', width: '50px' }}
+                        style={{ height: '40px', width: '40px' }}
                     >
                         <Controls visible={false} />
                     </Player>
@@ -286,7 +286,7 @@ export function Chat() {
                         autoplay
                         loop
                         src="https://assets4.lottiefiles.com/packages/lf20_clmd2mj6.json"
-                        style={{ height: '200px', width: '200px' }}
+                        style={{ height: '100px', width: '100px' }}
                     >
                         <Controls visible={false} />
                     </Player>
@@ -302,12 +302,12 @@ export function Chat() {
                         <>
 
                             <div className="usersContainer  animate__animated animate__flipInY">
-                    
+
                                 <Player
                                     autoplay
                                     loop
                                     src="https://assets5.lottiefiles.com/private_files/lf30_z588h1j0.json"
-                                    style={{ height: '50px', width: '50px' }}
+                                    style={{ height: '40px', width: '40px' }}
                                 >
                                     <Controls visible={false} />
                                 </Player>
@@ -321,9 +321,9 @@ export function Chat() {
                                     <div ref={messagesEndRef} />
                                 </div>
 
-                                <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
-                                <ul>{renderUsersInRoom}</ul>
-                                
+                                {/* <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
+                                <ul>{renderUsersInRoom}</ul> */}
+
                             </div>
                         </>
                     }
@@ -341,13 +341,21 @@ export function Chat() {
                                         autoplay
                                         keepLastFrame
                                         src="https://assets8.lottiefiles.com/packages/lf20_pge4fjym.json"
-                                        style={{ height: '60px', width: '60px' }}
+                                        style={{ height: '40px', width: '40px' }}
                                     >
                                         <Controls visible={false} />
                                     </Player>
 
                                 </h4>
+                                <div className="rightContainer">
+                                    <h4 className="title animate__animated animate__flipInY">Users in room:</h4>
+                                    <ul className="usersListUL">{renderUsersInRoom}</ul>
+
+                                </div>
+
                             </div>
+
+
                         </>
                     }
                     {

@@ -22,16 +22,17 @@ code {
 }
 
 main {
-  width: 100%;
+  width: 1000px;
+  height: fit-content;
   display: flex;
   margin: 0;
   padding: 30;
-  gap: 1%;
   display: flex;
   flex-direction: row;
   align-items: baseline;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 header {
@@ -54,8 +55,8 @@ header h2 {
 }
 
 .colors {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 10px;
   border: 1px solid darkgrey;
   transition: 0.3s;
@@ -73,10 +74,9 @@ header h2 {
 #grid {
   flex-grow: 4;
   display: grid;
-  grid-template-columns: repeat(25, 25px);
-  grid-template-rows: repeat(25, 25px);
+  grid-template-columns: repeat(25, 15px);
+  grid-template-rows: repeat(25, 15px);
   justify-content: center;
-
 }
 
 .pixel {
@@ -93,8 +93,8 @@ header h2 {
 
 #facitGrid {
   display: grid;
-  grid-template-columns: repeat(25, 10px);
-  grid-template-rows: repeat(25, 10px);
+  grid-template-columns: repeat(25, 5px);
+  grid-template-rows: repeat(25, 5px);
   justify-content: center;
   margin-top: 20px;
 }
@@ -102,8 +102,8 @@ header h2 {
 .resultGrid {
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(25, 12px);
-  grid-template-rows: repeat(25, 12px);
+  grid-template-columns: repeat(25, 10px);
+  grid-template-rows: repeat(25, 10px);
   justify-content: center;
   margin-top: 20px;
 }
@@ -130,8 +130,7 @@ header h2 {
 .imgContainer {
   border: 1px solid #4484ce;
   background-color: white;
-  padding: 2px;
-  padding-top: 20px;
+  padding: 5px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.2s;
@@ -144,8 +143,7 @@ header h2 {
 #chatContainer {
   border: 1px solid #4484ce;
   background-color: white;
-  margin: auto;
-  width: 80%;
+  width: 200px;
   height: 400px;
   overflow: scroll;
   padding: 20px;
@@ -196,22 +194,31 @@ header h2 {
   background-color: #f19f4d;
 }
 
+/* ul{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */
+
 ul li {
   display: flex;
   align-items: center;
+  list-style: none;
+  margin-left: 0%;
 }
 
 button {
   border: none;
   border-radius: 10px;
-  padding: 10px;
-  font-size: 0.7rem;
+  padding: 5px;
+  font-size: 0.5rem;
   background-color: #f19f4d;
   color: white;
   text-transform: uppercase;
   margin: 5px;
-  width: 100px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   cursor: pointer;
@@ -228,8 +235,8 @@ button:disabled,
 button[disabled] {
   border: none;
   border-radius: 10px;
-  padding: 10px;
-  font-size: 0.7rem;
+  padding: 5px;
+  font-size: 0.5rem;
   background-color: #cccccc92;
   color: #66666676;
 }
@@ -241,6 +248,12 @@ input {
   font-size: 0.7rem;
   margin: 5px;
   color: #16213E;
+}
+
+.inputContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .userIcon {
@@ -261,7 +274,7 @@ input {
   justify-content: center;
   align-items: center;
   padding: 30px;
-  font-size: 1.4rem;
+  font-size: 1rem;
   letter-spacing: 6px;
 }
 
@@ -269,7 +282,7 @@ input {
   font-weight: 500;
   color: #4484ce;
   letter-spacing: 2px;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .results {
@@ -288,7 +301,7 @@ input {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 30px;
+  padding: 10px;
 }
 
 .userNameInList {
@@ -338,9 +351,30 @@ input {
 }
 
 .listContainer{
-
   width: 100%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.listName{
+color:#16213E;
+font-weight: 400;
+letter-spacing: 3px;
+}
+
+.listName2{
+  color:#4484ce;
+  font-weight: 200;
+}
+
+.usersListUL{
+ padding: 0;
+}
+
+.rightContainer{
   display: flex;
   flex-direction: column;
   align-items: center;
